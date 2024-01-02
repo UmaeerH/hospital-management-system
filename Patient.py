@@ -6,9 +6,12 @@ class Patient:
         self.__firstName = fName
         self.__secondName = sName
         self.__age = age
+        self.__address = address
         self.__doc = "Unassigned"
         self.__appointments = []
+        self.__illness = "no diagnosis"
         self.__patientID = str(next(self.newid))+"-p"
+        self.__number = str("None provided")
 
     def get_firstName(self):
         return self.__firstName
@@ -28,18 +31,36 @@ class Patient:
         self.__doc = newDoc
     def get_pID(self):
         return self.__patientID
+    def get_illess(self):
+        return self.__illness
+    def set_illness(self, diag):
+        self.__illness = diag
+    def get_numb(self):
+        return self.__number
+    def set_numb(self, number):
+        self.__number = str(number)
     
-    def __str__(self) :
+    def add_appointment(self, date):
+        self.__appointments.append(date)
+    
+    def display(self) :
         return f'{self.__firstName:<10}{self.__secondName:<10}|{self.__doc:^15}|{self.__patientID:^5}'
+    
+    def __str__(self):
+        return f'{self.__firstName} {self.__secondName}, {self.__age} | Treated by {self.__doc} for {self.__illness} | ID: {self.__patientID}\nAddress: {self.__address} | numb: {self.__number}'
 
 #testing
 def main():
     pat1 = Patient("Arthur", "Allen", 23, "Kuwait")
-    print(pat1)
-    pat2 = Patient("Nathaniel", "Herrera", 42, "UK")
+    print(pat1.display())
+    pat2 = Patient("Nathan", "Herrera", 42, "UK")
     pat2.set_doc("Dr Lukas")
-    print(pat2)
-    print("Patient 2's age is: " + str(pat2.get_age()))
+    print(pat2.display())
+
+    pat3 = Patient("Marie", "Norris", 32, "52 whatever road")
+    pat3.set_doc("Dr Hellen")
+    pat3.set_numb("01215728952")
+    print(pat3)
 
 if __name__ == "__main__":
     main()

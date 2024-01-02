@@ -9,6 +9,7 @@ class Doctor:
         self.__patients = []
         self.__appointments = []
         self.__docID = str(next(self.newid))+"-d"
+        self.__number = str("None provided")
 
     def get_firstName(self):
         return self.__firstName
@@ -24,9 +25,15 @@ class Doctor:
         self.__speciality = newSpec
     def get_docID(self):
         return self.__docID
+    def get_numb(self):
+        return self.__number
+    def set_numb(self, number):
+        self.__number = str(number)
 
     def add_patient(self, patient):
         self.__patients.append(patient)
+    def remove_patient(self, patient):
+        self.__patients.remove(patient)
 
     def add_appointment(self, date):
         self.__appointments.append(date)
