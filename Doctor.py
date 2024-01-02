@@ -8,7 +8,7 @@ class Doctor:
         self.__speciality = speciality
         self.__patients = []
         self.__appointments = []
-        self.__docID = next(self.newid)
+        self.__docID = str(next(self.newid))+"-d"
 
     def get_firstName(self):
         return self.__firstName
