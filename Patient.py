@@ -2,10 +2,11 @@ import itertools
 
 class Patient:
     newid = itertools.count()
-    def __init__(self, fName, sName, age, address):
+    def __init__(self, fName, sName, age, number, address):
         self.__firstName = fName
         self.__secondName = sName
         self.__age = age
+        self.__number = number
         self.__address = address
         self.__doc = "Unassigned"
         self.__appointments = []
