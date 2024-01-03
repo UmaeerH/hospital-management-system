@@ -77,6 +77,7 @@ class loginGUI:
         for i in range(len(admins)):
             if enteredUser == admins[i].get_userName() and enteredPass == admins[i].get_pass():
                 print("Login verified")
+                break
             else:
                 print("Checking again..")
                 
