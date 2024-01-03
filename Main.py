@@ -7,7 +7,7 @@ from Doctor import Doctor
 from Patient import Patient
 
 #ACTORS
-admins = [Admin('admin','123','B1 1AB')] # username is 'admin', password is '123'
+admins = [Admin('admin','123','B1 1AB'), Admin('admin2','242','B2 1AB')] # username is 'admin', password is '123'
 doctors = [Doctor('John','Smith','Internal Med.'), Doctor('Jone','Smith','Pediatrics'), Doctor('Jone','Carlos','Cardiology')]
 patients = [Patient('Sara','Smith', 20, '07012345678','B1 234'), Patient('Mike','Jones', 37,'07555551234','L2 2AB'), Patient('Daivd','Smith', 15, '07123456789','C1 ABC')]
 discharged_patients = []
@@ -71,11 +71,16 @@ class loginGUI:
 
         
     def attempted(self):
+        enteredUser = self.window.enterUser.get() 
+        enteredPass = self.window.enterPass.get()
         print("Login button was clicked")
-        print(doctors[0])
-        #enteredUser = self.enterUser.get() 
-        #enteredPass = self.enterPass.get()
-        #if enteredUser in admin
+        for i in range(len(admins)):
+            if enteredUser == admins[i].get_userName() and enteredPass == admins[i].get_pass():
+                print("Login verified")
+            else:
+                print("Checking again..")
+                
+            
 
         
 
