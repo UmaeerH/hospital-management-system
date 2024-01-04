@@ -1,4 +1,4 @@
-# hospital-management-system
+# Hospital Management System
 1st Year Python project 
 
 This is a hypothetical hospital management system which will be avalible to three types of users.
@@ -46,3 +46,4 @@ This is a hypothetical hospital management system which will be avalible to thre
 - Illness
 ## Patient functions:
 - View doctor details
+- View their illness
