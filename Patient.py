@@ -2,17 +2,16 @@ import itertools
 
 class Patient:
     newid = itertools.count()
-    def __init__(self, fName, sName, age, number, address):
+    def __init__(self, fName, sName, age, number="None provided", address="None provided", doc="Unassigned", illness="no diagnosis", appointment=[]):
         self.__firstName = fName
         self.__secondName = sName
         self.__age = age
         self.__number = number
         self.__address = address
-        self.__doc = "Unassigned"
-        self.__appointments = []
-        self.__illness = "no diagnosis"
+        self.__doc = doc
+        self.__illness = illness
+        self.__appointments = appointment
         self.__patientID = str(next(self.newid))+"-p"
-        self.__number = str("None provided")
 
     def get_firstName(self):
         return self.__firstName
@@ -43,6 +42,8 @@ class Patient:
     
     def add_appointment(self, date):
         self.__appointments.append(date)
+    def rem_appointment(self, date):
+        self.__appointments.remove(date)
     
     def display(self) :
         return f'{self.__firstName:<10}{self.__secondName:<10}|{self.__doc:^15}|{self.__patientID:^5}'

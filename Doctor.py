@@ -2,15 +2,15 @@ import itertools
 
 class Doctor:
     newid = itertools.count()
-    def __init__(self, fName, sName, speciality="None", address="none provided"):
+    def __init__(self, fName, sName, speciality="None", address="None provided", numb="None provided", pats=[], apps=[]):
         self.__firstName = fName
         self.__secondName = sName
         self.__speciality = speciality
         self.__address = address
-        self.__patients = []
-        self.__appointments = []
+        self.__number = numb
+        self.__patients = pats
+        self.__appointments = apps
         self.__docID = str(next(self.newid))+"-d"
-        self.__number = str("None provided")
 
     def get_firstName(self):
         return self.__firstName
@@ -47,6 +47,8 @@ class Doctor:
 
     def add_appointment(self, date):
         self.__appointments.append(date)
+    def rem_appointment(self, date):
+        self.__appointments.remove(date)
 
     def __str__(self) :
         return f'{self.__firstName:<10}{self.__secondName:<10}|{self.__speciality:^15}|{self.__docID:^5}'
