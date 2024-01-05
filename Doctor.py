@@ -22,6 +22,10 @@ class Doctor:
     def set_secondName(self, newSecondName):
         self.__secondName = newSecondName
 
+    def get_fullName(self):
+        namestr = str(self.__firstName) + " " + str(self.__secondName) 
+        return namestr
+
     def get_speciality(self):
         return self.__speciality
     def set_speciality(self, newSpec):
@@ -63,6 +67,7 @@ def main():
     print("---------------------------------------")
     print("{0}\n{1}\n{2}\n{3}".format(doc1, doc2, doc3, doc4))
     print("---------------------------------------")
+    print(doc4.get_fullName())
 
 if __name__ == "__main__":
     main()

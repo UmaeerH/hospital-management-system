@@ -89,7 +89,7 @@ class loginGUI:
         #Content
         self.adWindow.header = tk.Label(self.adWindow.topAdminFrame, text="Admin View", background="#d6d4ff", font=tkfont.Font(family='Helvetica', size=18, weight="bold"))
         self.adWindow.header.pack(side="top")
-        self.adWindow.docButton = tk.Button(self.adWindow.midAdminFrame, text="View Doctors", bg="#d4d4d4", command=self.attempted)     #Placeholder commands
+        self.adWindow.docButton = tk.Button(self.adWindow.midAdminFrame, text="View Doctors", bg="#d4d4d4", command=self.adminDocPage) 
         self.adWindow.docButton.pack(side="left")
         self.adWindow.docButton.grid(row=0, column=2, padx=10, pady=5)
         self.adWindow.patButton = tk.Button(self.adWindow.botAdminFrame, text="View Patients", bg="#d4d4d4", command=self.attempted)        #Placeholder commands
@@ -114,6 +114,36 @@ class loginGUI:
                     print("Checking again..")
         except:
             print("Admin already logged in")
+
+    def adminDocPage(self):
+        self.adDocWindow = tk.Toplevel()
+        self.adDocWindow.title("Doctor View")
+        self.adDocWindow.geometry("500x350")
+        self.adDocWindow.resizable(0,0)
+        self.adDocWindow.configure(bg="#ffa7a7")
+        #Frames
+        self.adDocWindow.topFrame = tk.Frame(self.adDocWindow, background="#ffa7a7")
+        self.adDocWindow.midFrame = tk.Frame(self.adDocWindow, background="#ffa7a7")
+        self.adDocWindow.mid2Frame = tk.Frame(self.adDocWindow, background="#ffa7a7")
+        self.adDocWindow.botFrame = tk.Frame(self.adDocWindow, background="#ffa7a7")
+        self.adDocWindow.topFrame.pack(side="top")
+        self.adDocWindow.midFrame.pack(side="top")
+        self.adDocWindow.mid2Frame.pack(side="top")
+        self.adDocWindow.botFrame.pack(side="top")
+        #Content
+        self.adDocWindow.docList = tk.Listbox(self.adDocWindow.topFrame, background="#ff9797", width=30)
+        self.adDocWindow.docList.pack(side="left")
+        self.adDocWindow.docList.grid(row=0, column=1, padx=10, pady=5)
+        for i in range(len(doctors)):           #List generation
+            self.adDocWindow.docList.insert(i+1, doctors[i].get_fullName())
+        self.adDocWindow.showButton = tk.Button(self.adDocWindow.midFrame, text='Show Doc info', command=self.docInfo)
+        self.adDocWindow.showButton.pack(side="top")
+        self.adDocWindow.showButton.grid(row=0, column=1, padx=10, pady=5)
+
+    def docInfo(self):
+        for i in self.adDocWindow.docList.curselection():
+            print(self.adDocWindow.docList.get(i))
+            print(doctors[i].get_docID())
 
 
     def docPage(self):
