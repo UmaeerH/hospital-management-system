@@ -115,6 +115,7 @@ class loginGUI:
         except:
             print("Admin already logged in")
 
+
     def adminDocPage(self):
         self.adDocWindow = tk.Toplevel()
         self.adDocWindow.title("Doctor View")
@@ -125,25 +126,49 @@ class loginGUI:
         self.adDocWindow.topFrame = tk.Frame(self.adDocWindow, background="#ffa7a7")
         self.adDocWindow.midFrame = tk.Frame(self.adDocWindow, background="#ffa7a7")
         self.adDocWindow.mid2Frame = tk.Frame(self.adDocWindow, background="#ffa7a7")
-        self.adDocWindow.botFrame = tk.Frame(self.adDocWindow, background="#ffa7a7")
+        self.adDocWindow.botFrame = tk.Frame(self.adDocWindow, background="#a7a7a7")
         self.adDocWindow.topFrame.pack(side="top")
         self.adDocWindow.midFrame.pack(side="top")
         self.adDocWindow.mid2Frame.pack(side="top")
         self.adDocWindow.botFrame.pack(side="top")
+        #Variables
+        displayName = "None selected"
+        displayID = "None"
+        displaySpec = " "
+        displayNumb = " "
+        displayAdd = " "
         #Content
         self.adDocWindow.docList = tk.Listbox(self.adDocWindow.topFrame, background="#ff9797", width=30)
         self.adDocWindow.docList.pack(side="left")
         self.adDocWindow.docList.grid(row=0, column=1, padx=10, pady=5)
         for i in range(len(doctors)):           #List generation
             self.adDocWindow.docList.insert(i+1, doctors[i].get_fullName())
-        self.adDocWindow.showButton = tk.Button(self.adDocWindow.midFrame, text='Show Doc info', command=self.docInfo)
+        self.adDocWindow.showButton = tk.Button(self.adDocWindow.midFrame, text='Show Doc info', command=self.docInfoDisp)
         self.adDocWindow.showButton.pack(side="top")
         self.adDocWindow.showButton.grid(row=0, column=1, padx=10, pady=5)
-
-    def docInfo(self):
+        self.adDocWindow.docLabel = tk.Label(self.adDocWindow.mid2Frame, text="Doctor details")
+        self.adDocWindow.docLabel.pack(side="top")
+        self.adDocWindow.docName = tk.Label(self.adDocWindow.botFrame, text=displayName)
+        self.adDocWindow.docName.pack(side="top")
+        self.adDocWindow.docID = tk.Label(self.adDocWindow.botFrame, text=displayID)
+        self.adDocWindow.docID.pack(side="top")        
+        self.adDocWindow.docSpec = tk.Label(self.adDocWindow.botFrame, text=displaySpec)
+        self.adDocWindow.docSpec.pack(side="top")
+        self.adDocWindow.docNumb = tk.Label(self.adDocWindow.botFrame, text=displayNumb)
+        self.adDocWindow.docNumb.pack(side="top")
+        self.adDocWindow.docAddress = tk.Label(self.adDocWindow.botFrame, text=displayAdd)
+        self.adDocWindow.docAddress.pack(side="top")
+    
+    def docInfoDisp(self):
         for i in self.adDocWindow.docList.curselection():
             print(self.adDocWindow.docList.get(i))
             print(doctors[i].get_docID())
+            self.adDocWindow.docName.config(text=doctors[i].get_fullName())
+            self.adDocWindow.docID.config(text=doctors[i].get_docID())
+            self.adDocWindow.docSpec.config(text=doctors[i].get_speciality())
+            self.adDocWindow.docNumb.config(text=doctors[i].get_numb())
+            self.adDocWindow.docAddress.config(text=doctors[i].get_address())
+            
 
 
     def docPage(self):
