@@ -145,8 +145,11 @@ class loginGUI:
         for i in range(len(doctors)):           #List generation
             self.adDocWindow.docList.insert(i+1, doctors[i].get_fullName())
         self.adDocWindow.showButton = tk.Button(self.adDocWindow.midFrame, text='Show Doc info', command=self.docInfoDisp, background="#ff9797")
-        self.adDocWindow.showButton.pack(side="top")
-        self.adDocWindow.showButton.grid(row=0, column=1, padx=10, pady=5)
+        self.adDocWindow.showButton.pack(side="left")
+        self.adDocWindow.editButton = tk.Button(self.adDocWindow.midFrame, text="Edit Doc info", command=self.adminDocEdit, background="#ff9797")
+        self.adDocWindow.editButton.pack(side="left")
+        self.adDocWindow.delButton = tk.Button(self.adDocWindow.midFrame, text="Add Doctor", command=self.adminDocCreate, background="#a7c194")
+        self.adDocWindow.delButton.pack(side="left")
         self.adDocWindow.docLabel = tk.Label(self.adDocWindow.mid2Frame, text="Doctor\'s Details", font=tkfont.Font(family='Helvetica', size=14, weight="bold"), background="#ffa7a7")
         self.adDocWindow.docLabel.pack(side="top")
         #DETAILS
@@ -169,7 +172,7 @@ class loginGUI:
             varB = f'{"ID:":>10} {doctors[i].get_docID():>15}'
             varC = f'{"Speciality:":>10} {doctors[i].get_speciality():>15}'
             varD = f'{"Number:":>10} {doctors[i].get_numb():>15}'
-            varE = f'{"Address:":>10} {str(doctors[i].get_address()):>25}'
+            varE = f'{"Address:":>10} {doctors[i].get_address():>25}'
             varF = f'{"Patients:":>10} {str(doctors[i].get_patient()):>25}'
             self.adDocWindow.docName.config(text=varA)
             self.adDocWindow.docID.config(text=varB)
@@ -178,6 +181,28 @@ class loginGUI:
             self.adDocWindow.docAddress.config(text=varE)
             self.adDocWindow.docPats.config(text=varF)
             
+    def adminDocEdit(self):
+        #get doc
+        for i in self.adDocWindow.docList.curselection():
+            selectedDoc = i
+        #Window settings
+        self.adDocEditWindow = tk.Toplevel()
+        self.adDocEditWindow.title(doctors[selectedDoc].get_fullName())
+        self.adDocEditWindow.geometry("300x250")
+        self.adDocEditWindow.resizable(0,0)
+        self.adDocEditWindow.configure(bg="#ffa7a7")
+
+    def adminDocCreate(self):
+        #Window
+        self.adDocCreateWindow = tk.Toplevel()
+        self.adDocCreateWindow.title("Create Doctor")
+        self.adDocCreateWindow.geometry("300x350")
+        self.adDocCreateWindow.resizable(0,0)
+        self.adDocCreateWindow.configure(bg="#a7c194")
+        #Frames
+        self.adDocCreateWindow.nameFrame = tk.Frame(self.adDocCreateWindow, background="#a7c194")
+        #Inputs
+        self.adDocCreateWindow.name = tk.Label(self.adDocCreateWindow.nameFrame, text="Name:")
 
 
     def docPage(self):
@@ -207,7 +232,7 @@ class loginGUI:
 
 
 def main():
-    newUI = loginGUI()
+    loginGUI()
 
 if __name__ == "__main__":
     main()
