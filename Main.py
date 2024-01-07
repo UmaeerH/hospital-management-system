@@ -8,7 +8,7 @@ from Doctor import Doctor
 from Patient import Patient
 #ACTORS
 admins = [Admin('admin','123','B1 1AB'), Admin('admin2','242','B2 1AB')] # username is 'admin', password is '123'
-doctors = [Doctor('John','Smith','Internal Med.'), Doctor('Jone','Smith','Pediatrics'), Doctor('Jone','Carlos','Cardiology'), Doctor("Irie", "Ford", "Pediatrics", "Guatemala", "+4472794272")]
+doctors = [Doctor('John','Smith','Internal Med.'), Doctor('Will','Robinson','Pediatrics'), Doctor('Jone','Carlos','Cardiology'), Doctor("Irie", "Ford", "Pediatrics", "B1 1AB", "+4472794272")]
 patients = [Patient('Sara','Smith', 20, '07012345678','B1 234'), Patient('Mike','Jones', 37,'07555551234','L2 2AB'), Patient('Daivd','Smith', 15, '07123456789','C1 ABC')]
 discharged_patients = []
 
@@ -201,9 +201,44 @@ class loginGUI:
         self.adDocCreateWindow.configure(bg="#a7c194")
         #Frames
         self.adDocCreateWindow.nameFrame = tk.Frame(self.adDocCreateWindow, background="#a7c194")
+        self.adDocCreateWindow.nameFrame.pack(side="top")
+        self.adDocCreateWindow.surnameFrame = tk.Frame(self.adDocCreateWindow, background="#a7c194")
+        self.adDocCreateWindow.surnameFrame.pack(side="top")
+        self.adDocCreateWindow.specFrame = tk.Frame(self.adDocCreateWindow, background="#a7c194")
+        self.adDocCreateWindow.specFrame.pack(side="top")
+        self.adDocCreateWindow.botFrame = tk.Frame(self.adDocCreateWindow, background="#a7c194")
+        self.adDocCreateWindow.botFrame.pack(side="top")
         #Inputs
-        self.adDocCreateWindow.name = tk.Label(self.adDocCreateWindow.nameFrame, text="Name:")
+        self.adDocCreateWindow.nameL = tk.Label(self.adDocCreateWindow.nameFrame, text="First name:")
+        self.adDocCreateWindow.nameL.pack(side="left")
+        self.adDocCreateWindow.nameE = tk.Entry(self.adDocCreateWindow.nameFrame, background="#d4d4d4")
+        self.adDocCreateWindow.nameE.pack(side="left")
+        self.adDocCreateWindow.surnameL = tk.Label(self.adDocCreateWindow.surnameFrame, text="Second name:")
+        self.adDocCreateWindow.surnameL.pack(side="left")
+        self.adDocCreateWindow.surnameE = tk.Entry(self.adDocCreateWindow.surnameFrame, background="#d4d4d4")
+        self.adDocCreateWindow.surnameE.pack(side="left")
+        self.adDocCreateWindow.specialityL = tk.Label(self.adDocCreateWindow.specFrame, text="Speciality:")
+        self.adDocCreateWindow.specialityL.pack(side="left")
+        self.adDocCreateWindow.specialityE = tk.Entry(self.adDocCreateWindow.specFrame, background="#d4d4d4")
+        self.adDocCreateWindow.specialityE.pack(side="left")
+        self.adDocCreateWindow.createButton = tk.Button(self.adDocCreateWindow.botFrame, text="Create Doctor", command=self.doctorCreate, background="#d4d4d4")
+        self.adDocCreateWindow.createButton.pack(side="left")
 
+
+    def doctorCreate(self):
+        #Get
+        enteredName = self.adDocCreateWindow.nameE.get()
+        enteredSname = self.adDocCreateWindow.surnameE.get()
+        enteredSpec = self.adDocCreateWindow.specialityE.get()
+        try:
+            new_doc = Doctor(enteredName, enteredSname, enteredSpec)
+            doctors.append(new_doc)
+        except:
+            print("Error creating doctor")
+        else:
+            self.adDocWindow.docList.delete(0, len(doctors))
+            for i in range(len(doctors)):           #List update
+                self.adDocWindow.docList.insert(i+1, doctors[i].get_fullName())
 
     def docPage(self):
         #window properties
