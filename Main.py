@@ -148,24 +148,25 @@ class loginGUI:
         self.adDocWindow.showButton.grid(row=0, column=1, padx=10, pady=5)
         self.adDocWindow.docLabel = tk.Label(self.adDocWindow.mid2Frame, text="Doctor details")
         self.adDocWindow.docLabel.pack(side="top")
-        self.adDocWindow.docName = tk.Label(self.adDocWindow.botFrame, text=displayName)
-        self.adDocWindow.docName.pack(side="top")
-        self.adDocWindow.docID = tk.Label(self.adDocWindow.botFrame, text=displayID)
-        self.adDocWindow.docID.pack(side="top")        
-        self.adDocWindow.docSpec = tk.Label(self.adDocWindow.botFrame, text=displaySpec)
-        self.adDocWindow.docSpec.pack(side="top")
-        self.adDocWindow.docNumb = tk.Label(self.adDocWindow.botFrame, text=displayNumb)
-        self.adDocWindow.docNumb.pack(side="top")
-        self.adDocWindow.docAddress = tk.Label(self.adDocWindow.botFrame, text=displayAdd)
-        self.adDocWindow.docAddress.pack(side="top")
+        #DETAILS
+        self.adDocWindow.docName = tk.Label(self.adDocWindow.botFrame, text=displayName, width=25)
+        self.adDocWindow.docName.pack(side="top", expand="False")
+        self.adDocWindow.docID = tk.Label(self.adDocWindow.botFrame, text=displayID, width=25)
+        self.adDocWindow.docID.pack(side="top", expand="False")        
+        self.adDocWindow.docSpec = tk.Label(self.adDocWindow.botFrame, text=displaySpec, width=25)
+        self.adDocWindow.docSpec.pack(side="top", expand="False")
+        self.adDocWindow.docNumb = tk.Label(self.adDocWindow.botFrame, text=displayNumb, width=25)
+        self.adDocWindow.docNumb.pack(side="top", expand="False")
+        self.adDocWindow.docAddress = tk.Label(self.adDocWindow.botFrame, text=displayAdd, width=35)
+        self.adDocWindow.docAddress.pack(side="top", expand="False")
     
     def docInfoDisp(self):
         for i in self.adDocWindow.docList.curselection():
-            varA = doctors[i].get_fullName()
-            varB = doctors[i].get_docID()
-            varC = doctors[i].get_speciality()
-            varD = doctors[i].get_numb()
-            varE = doctors[i].get_address()
+            varA = f'{"Name:":>10} {doctors[i].get_fullName():>15}'
+            varB = f'{"ID:":>10} {doctors[i].get_docID():>15}'
+            varC = f'{"Speciality:":>10} {doctors[i].get_speciality():>15}'
+            varD = f'{"Number:":>10} {doctors[i].get_numb():>15}'
+            varE = f'{"Address:":>10} {doctors[i].get_address():>15}'
             self.adDocWindow.docName.config(text=varA)
             self.adDocWindow.docID.config(text=varB)
             self.adDocWindow.docSpec.config(text=varC)
