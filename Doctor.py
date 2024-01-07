@@ -44,11 +44,15 @@ class Doctor:
     def set_address(self, newAdd):
         self.__address = newAdd
 
+    def get_patient(self):
+        return self.__patients
     def add_patient(self, patient):
         self.__patients.append(patient)
     def remove_patient(self, patient):
         self.__patients.remove(patient)
 
+    def get_appointment(self):
+        return self.__appointments
     def add_appointment(self, date):
         self.__appointments.append(date)
     def rem_appointment(self, date):

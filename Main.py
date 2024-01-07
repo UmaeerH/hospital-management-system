@@ -161,13 +161,16 @@ class loginGUI:
     
     def docInfoDisp(self):
         for i in self.adDocWindow.docList.curselection():
-            print(self.adDocWindow.docList.get(i))
-            print(doctors[i].get_docID())
-            self.adDocWindow.docName.config(text=doctors[i].get_fullName())
-            self.adDocWindow.docID.config(text=doctors[i].get_docID())
-            self.adDocWindow.docSpec.config(text=doctors[i].get_speciality())
-            self.adDocWindow.docNumb.config(text=doctors[i].get_numb())
-            self.adDocWindow.docAddress.config(text=doctors[i].get_address())
+            varA = doctors[i].get_fullName()
+            varB = doctors[i].get_docID()
+            varC = doctors[i].get_speciality()
+            varD = doctors[i].get_numb()
+            varE = doctors[i].get_address()
+            self.adDocWindow.docName.config(text=varA)
+            self.adDocWindow.docID.config(text=varB)
+            self.adDocWindow.docSpec.config(text=varC)
+            self.adDocWindow.docNumb.config(text=varD)
+            self.adDocWindow.docAddress.config(text=varE)
             
 
 
