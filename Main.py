@@ -119,7 +119,7 @@ class loginGUI:
     def adminDocPage(self):
         self.adDocWindow = tk.Toplevel()
         self.adDocWindow.title("Doctor View")
-        self.adDocWindow.geometry("500x350")
+        self.adDocWindow.geometry("500x450")
         self.adDocWindow.resizable(0,0)
         self.adDocWindow.configure(bg="#ffa7a7")
         #Frames
@@ -137,6 +137,7 @@ class loginGUI:
         displaySpec = " "
         displayNumb = " "
         displayAdd = " "
+        displayPatients = " "
         #Content
         self.adDocWindow.docList = tk.Listbox(self.adDocWindow.topFrame, background="#ff9797", width=30)
         self.adDocWindow.docList.pack(side="left")
@@ -149,16 +150,18 @@ class loginGUI:
         self.adDocWindow.docLabel = tk.Label(self.adDocWindow.mid2Frame, text="Doctor details")
         self.adDocWindow.docLabel.pack(side="top")
         #DETAILS
-        self.adDocWindow.docName = tk.Label(self.adDocWindow.botFrame, text=displayName, width=25)
+        self.adDocWindow.docName = tk.Label(self.adDocWindow.botFrame, text=displayName, width=25, background="#a7a7a7")
         self.adDocWindow.docName.pack(side="top", expand="False")
-        self.adDocWindow.docID = tk.Label(self.adDocWindow.botFrame, text=displayID, width=25)
+        self.adDocWindow.docID = tk.Label(self.adDocWindow.botFrame, text=displayID, width=25, background="#a7a7a7")
         self.adDocWindow.docID.pack(side="top", expand="False")        
-        self.adDocWindow.docSpec = tk.Label(self.adDocWindow.botFrame, text=displaySpec, width=25)
+        self.adDocWindow.docSpec = tk.Label(self.adDocWindow.botFrame, text=displaySpec, width=25, background="#a7a7a7")
         self.adDocWindow.docSpec.pack(side="top", expand="False")
-        self.adDocWindow.docNumb = tk.Label(self.adDocWindow.botFrame, text=displayNumb, width=25)
+        self.adDocWindow.docNumb = tk.Label(self.adDocWindow.botFrame, text=displayNumb, width=25, background="#a7a7a7")
         self.adDocWindow.docNumb.pack(side="top", expand="False")
-        self.adDocWindow.docAddress = tk.Label(self.adDocWindow.botFrame, text=displayAdd, width=35)
+        self.adDocWindow.docAddress = tk.Label(self.adDocWindow.botFrame, text=displayAdd, width=35, background="#a7a7a7")
         self.adDocWindow.docAddress.pack(side="top", expand="False")
+        self.adDocWindow.docPats = tk.Label(self.adDocWindow.botFrame, text=displayPatients, width=35, background="#a7a7a7")
+        self.adDocWindow.docPats.pack(side="top", expand="True")
     
     def docInfoDisp(self):
         for i in self.adDocWindow.docList.curselection():
@@ -166,12 +169,14 @@ class loginGUI:
             varB = f'{"ID:":>10} {doctors[i].get_docID():>15}'
             varC = f'{"Speciality:":>10} {doctors[i].get_speciality():>15}'
             varD = f'{"Number:":>10} {doctors[i].get_numb():>15}'
-            varE = f'{"Address:":>10} {doctors[i].get_address():>15}'
+            varE = f'{"Address:":>10} {str(doctors[i].get_address()):>25}'
+            varF = f'{"Patients:":>10} {str(doctors[i].get_patient()):>25}'
             self.adDocWindow.docName.config(text=varA)
             self.adDocWindow.docID.config(text=varB)
             self.adDocWindow.docSpec.config(text=varC)
             self.adDocWindow.docNumb.config(text=varD)
             self.adDocWindow.docAddress.config(text=varE)
+            self.adDocWindow.docPats.config(text=varF)
             
 
 
