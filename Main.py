@@ -8,7 +8,7 @@ from Doctor import Doctor
 from Patient import Patient
 #ACTORS
 admins = [Admin('admin','123','B1 1AB'), Admin('admin2','242','B2 1AB')] # username is 'admin', password is '123'
-doctors = [Doctor('John','Smith','Internal Med.'), Doctor('Jone','Smith','Pediatrics'), Doctor('Jone','Carlos','Cardiology')]
+doctors = [Doctor('John','Smith','Internal Med.'), Doctor('Jone','Smith','Pediatrics'), Doctor('Jone','Carlos','Cardiology'), Doctor("Irie", "Ford", "Pediatrics", "Guatemala", "+4472794272")]
 patients = [Patient('Sara','Smith', 20, '07012345678','B1 234'), Patient('Mike','Jones', 37,'07555551234','L2 2AB'), Patient('Daivd','Smith', 15, '07123456789','C1 ABC')]
 discharged_patients = []
 
@@ -118,7 +118,7 @@ class loginGUI:
 
     def adminDocPage(self):
         self.adDocWindow = tk.Toplevel()
-        self.adDocWindow.title("Doctor View")
+        self.adDocWindow.title("View Doctors")
         self.adDocWindow.geometry("500x450")
         self.adDocWindow.resizable(0,0)
         self.adDocWindow.configure(bg="#ffa7a7")
@@ -144,10 +144,10 @@ class loginGUI:
         self.adDocWindow.docList.grid(row=0, column=1, padx=10, pady=5)
         for i in range(len(doctors)):           #List generation
             self.adDocWindow.docList.insert(i+1, doctors[i].get_fullName())
-        self.adDocWindow.showButton = tk.Button(self.adDocWindow.midFrame, text='Show Doc info', command=self.docInfoDisp)
+        self.adDocWindow.showButton = tk.Button(self.adDocWindow.midFrame, text='Show Doc info', command=self.docInfoDisp, background="#ff9797")
         self.adDocWindow.showButton.pack(side="top")
         self.adDocWindow.showButton.grid(row=0, column=1, padx=10, pady=5)
-        self.adDocWindow.docLabel = tk.Label(self.adDocWindow.mid2Frame, text="Doctor details")
+        self.adDocWindow.docLabel = tk.Label(self.adDocWindow.mid2Frame, text="Doctor\'s Details", font=tkfont.Font(family='Helvetica', size=14, weight="bold"), background="#ffa7a7")
         self.adDocWindow.docLabel.pack(side="top")
         #DETAILS
         self.adDocWindow.docName = tk.Label(self.adDocWindow.botFrame, text=displayName, width=25, background="#a7a7a7")
@@ -181,7 +181,26 @@ class loginGUI:
 
 
     def docPage(self):
-        print("WIP DOC")
+        #window properties
+        self.docLogWindow = tk.Toplevel()
+        self.docLogWindow.title("Doctor Log-in")
+        self.docLogWindow.geometry("250x250")
+        self.docLogWindow.resizable(0,0)
+        self.docLogWindow.configure(bg="#58f9bb")
+        #frames
+        self.docLogWindow.topDocLogFrame = tk.Frame(self.docLogWindow)
+        self.docLogWindow.midDocLogFrame = tk.Frame(self.docLogWindow)
+        self.docLogWindow.botDocLogFrame = tk.Frame(self.docLogWindow)
+        self.docLogWindow.topDocLogFrame.pack(side="top")
+        self.docLogWindow.midDocLogFrame.pack(side="top")
+        self.docLogWindow.botDocLogFrame.pack(side="top")
+        #Input
+        self.docLogWindow.idLabel = tk.Label(self.docLogWindow.topDocLogFrame, text="Enter your ID: ", bg="#58f9bb")
+        self.docLogWindow.idLabel.pack(side="left")
+        self.docLogWindow.enterID = tk.Entry(self.docLogWindow.topDocLogFrame, width=14, bg="#1dd48e")
+        self.docLogWindow.enterID.pack(side="left")
+        self.docLogWindow.logButton = tk.Button(self.docLogWindow.botDocLogFrame, text="Log-in", bg="#1dd48e", command=self.attempted) #Placeholder command
+        self.docLogWindow.logButton.pack(side="bottom")
 
     def patPage(self):
         print("WIP PATIENT")
