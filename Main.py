@@ -190,12 +190,31 @@ class loginGUI:
         #get doc
         for i in self.adDocWindow.docList.curselection():
             selectedDoc = i
+        editingDoctor = copy.deepcopy(doctors[selectedDoc])
         #Window settings
         self.adDocEditWindow = tk.Toplevel()
-        self.adDocEditWindow.title(doctors[selectedDoc].get_fullName())
+        self.adDocEditWindow.title(editingDoctor.get_fullName())
         self.adDocEditWindow.geometry("300x250")
         self.adDocEditWindow.resizable(0,0)
         self.adDocEditWindow.configure(bg="#ffa7a7")
+        #Frames
+        self.adDocEditWindow.nameIDFrame = tk.Frame(self.adDocEditWindow, background="#ffa7a7")
+        self.adDocEditWindow.specFrame = tk.Frame(self.adDocEditWindow, background="#ffa7a7")
+        self.adDocEditWindow.addressFrame = tk.Frame(self.adDocEditWindow, background="#ffa7a7")
+        self.adDocEditWindow.numbFrame = tk.Frame(self.adDocEditWindow, background="#ffa7a7")
+        self.adDocEditWindow.patFrame = tk.Frame(self.adDocEditWindow, background="#ffa7a7")
+        self.adDocEditWindow.nameIDFrame.pack(side="top")
+        self.adDocEditWindow.specFrame.pack(side="top")
+        self.adDocEditWindow.addressFrame.pack(side="top")
+        self.adDocEditWindow.numbFrame.pack(side="top")
+        self.adDocEditWindow.patFrame.pack(side="top")
+        #Content
+        nameID = f'{editingDoctor.get_fullName():<15}|{editingDoctor.get_docID():^5}'
+        self.adDocEditWindow.nameLab = tk.Label(self.adDocEditWindow.nameIDFrame, background="#ffa7a7", text=nameID, font=tkfont.Font(family='Helvetica', size=12, weight="bold"))
+        self.adDocEditWindow.nameLab.pack(side="top")
+        self.adDocEditWindow.entry = tk.Entry(self.adDocEditWindow.nameIDFrame, background="#d4d4d4")
+        self.adDocEditWindow.entry.pack(side="top")
+
 
     def adminDocCreate(self):
         #Window
@@ -311,7 +330,6 @@ def main():
     testDoc = copy.deepcopy(doctors[1])
     testDoc.add_patient(patients[2])
     doctors[1] = testDoc
-    print(testDoc)
     loginGUI()
 
 if __name__ == "__main__":
