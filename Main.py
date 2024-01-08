@@ -189,7 +189,9 @@ class loginGUI:
     def adminDocEdit(self):     #TODO Compelete
         #get doc
         for i in self.adDocWindow.docList.curselection():
+            global selectedDoc
             selectedDoc = i
+        global editingDoctor
         editingDoctor = copy.deepcopy(doctors[selectedDoc])
         #Window settings
         self.adDocEditWindow = tk.Toplevel()
@@ -202,11 +204,13 @@ class loginGUI:
         self.adDocEditWindow.specFrame = tk.Frame(self.adDocEditWindow, background="#ffa7a7")
         self.adDocEditWindow.addressFrame = tk.Frame(self.adDocEditWindow, background="#ffa7a7")
         self.adDocEditWindow.numbFrame = tk.Frame(self.adDocEditWindow, background="#ffa7a7")
+        self.adDocEditWindow.alertFrame = tk.Frame(self.adDocEditWindow, background="#ffa7a7")
         self.adDocEditWindow.patFrame = tk.Frame(self.adDocEditWindow, background="#ffa7a7")
         self.adDocEditWindow.nameIDFrame.pack(side="top")
         self.adDocEditWindow.specFrame.pack(side="top")
         self.adDocEditWindow.addressFrame.pack(side="top")
         self.adDocEditWindow.numbFrame.pack(side="top")
+        self.adDocEditWindow.alertFrame.pack(side="top")
         self.adDocEditWindow.patFrame.pack(side="top")
         #Content
         nameID = f'{editingDoctor.get_fullName():<15}|{editingDoctor.get_docID():^5}'
@@ -214,7 +218,29 @@ class loginGUI:
         self.adDocEditWindow.nameLab.pack(side="top")
         self.adDocEditWindow.entry = tk.Entry(self.adDocEditWindow.nameIDFrame, background="#d4d4d4")
         self.adDocEditWindow.entry.pack(side="top")
-
+        #Buttons
+        self.adDocEditWindow.specButton = tk.Button(self.adDocEditWindow.specFrame, background="#d4d4d4", text="Set as Specialisation", command=self.editSpec)
+        self.adDocEditWindow.addButton = tk.Button(self.adDocEditWindow.addressFrame, background="#d4d4d4", text="Set as Address", command=self.editAdd)
+        self.adDocEditWindow.numbButton = tk.Button(self.adDocEditWindow.numbFrame, background="#d4d4d4", text="Set as Number", command=self.editNumb)
+        self.adDocEditWindow.specButton.pack(side="top")
+        self.adDocEditWindow.addButton.pack(side="top")
+        self.adDocEditWindow.numbButton.pack(side="top")
+        #Alert
+        self.adDocEditWindow.alertLabel = tk.Label(self.adDocEditWindow.alertFrame, background="#ffa7a7", text=" ", font=tkfont.Font(family='Helvetica', size=12, weight="bold"))
+        self.adDocEditWindow.alertLabel.pack(side="top")
+        
+    def editSpec(self):
+        editingDoctor.set_speciality(self.adDocEditWindow.entry.get())
+        doctors[selectedDoc] = editingDoctor
+        self.adDocEditWindow.alertLabel.config(text="Speciality Changed")
+    def editAdd(self):
+        editingDoctor.set_address(self.adDocEditWindow.entry.get())
+        doctors[selectedDoc] = editingDoctor
+        self.adDocEditWindow.alertLabel.config(text="Address Changed")
+    def editNumb(self):
+        editingDoctor.set_numb(self.adDocEditWindow.entry.get())
+        doctors[selectedDoc] = editingDoctor
+        self.adDocEditWindow.alertLabel.config(text="Number Changed")
 
     def adminDocCreate(self):
         #Window
@@ -250,7 +276,6 @@ class loginGUI:
         self.adDocCreateWindow.warningText = tk.Label(self.adDocCreateWindow.botFrame, text=" ", background="#a7c194", font=tkfont.Font(family='Helvetica', size=14, weight="bold"))
         self.adDocCreateWindow.warningText.pack(side="top")
 
-
     def doctorCreate(self):
         #Get Entered info
         enteredName = self.adDocCreateWindow.nameE.get().capitalize()
@@ -275,7 +300,7 @@ class loginGUI:
                 for i in range(len(doctors)):
                     self.adDocWindow.docList.insert(i+1, doctors[i].get_fullName())
 
-#DOCTOR's SECTION
+#DOCTOR'S SECTION
 
     def docLogPage(self):
         #window properties
