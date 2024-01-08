@@ -13,6 +13,7 @@ patients = [Patient('Sara','Smith', 20, '07012345678','B1 234'), Patient('Mike',
 discharged_patients = []
 
 #TODO   "text files to store the patient’s related information" -- no worries about saving to these files, or doctor/admin files
+loggedDoc = 0
 
 class loginGUI:
     #INITIAL WINDOW
@@ -118,7 +119,6 @@ class loginGUI:
                     print("Checking again..")
         except:
             print("Admin already logged in")
-
 
     def adminDocPage(self):
         self.adDocWindow = tk.Toplevel()
@@ -276,7 +276,7 @@ class loginGUI:
         self.docLogWindow.idLabel.pack(side="left")
         self.docLogWindow.enterID = tk.Entry(self.docLogWindow.topDocLogFrame, width=14, bg="#1dd48e")
         self.docLogWindow.enterID.pack(side="left")
-        self.docLogWindow.logButton = tk.Button(self.docLogWindow.botDocLogFrame, text="Log-in", bg="#1dd48e", command=self.docLogin) #Placeholder command
+        self.docLogWindow.logButton = tk.Button(self.docLogWindow.botDocLogFrame, text="Log-in", bg="#1dd48e", command=self.docLogin)
         self.docLogWindow.logButton.pack(side="bottom")
 
     def docLogin(self):
@@ -286,10 +286,20 @@ class loginGUI:
             for i in range(len(doctors)):
                 if enteredID.lower() == doctors[i].get_docID():
                     print("Login verified")
-                    self.adminPage()
+                    global loggedDoc
+                    loggedDoc = i
+                    self.doctorPage()
                     break
         except:
             print("Error logging in")
+
+    def doctorPage(self):
+        global loggedDoc
+        self.docHomeWindow = tk.Toplevel()
+        self.docHomeWindow.title("Doctor " + doctors[loggedDoc].get_fullName())
+        self.docHomeWindow.geometry("350x250")
+        self.docHomeWindow.resizable(0,0)
+        self.docHomeWindow.configure(bg="#58f9bb")
 
 
     def patPage(self):
