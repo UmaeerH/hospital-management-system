@@ -49,6 +49,7 @@ class Doctor:
         return self.__patients
     def add_patient(self, patient):
         self.__patients.append(patient)
+        patient.set_doc(self.__docID)
     def remove_patient(self, patient):
         self.__patients.remove(patient)
     def get_patientString(self):

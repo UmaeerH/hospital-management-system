@@ -102,7 +102,7 @@ class loginGUI:
         self.adWindow.patButton.grid(row=2, column=1, padx=10, pady=10)
         self.adWindow.reportButton = tk.Button(self.adWindow.bot2AdminFrame, text="Management Report", bg="#d4d4d4", command=self.attempted)        #Placeholder commands
         self.adWindow.reportButton.pack(side="left")
-        self.adWindow.editButton = tk.Button(self.adWindow.bot2AdminFrame, text="Account Details", bg="#d4d4d4", command=self.attempted)        #Placeholder commands
+        self.adWindow.editButton = tk.Button(self.adWindow.bot2AdminFrame, text="Account Details", bg="#d4d4d4", command=self.adminOwnPage)
         self.adWindow.editButton.pack(side="right")
 
 
@@ -115,11 +115,42 @@ class loginGUI:
                 if enteredUser == admins[i].get_userName() and enteredPass == admins[i].get_pass():
                     print("Login verified")
                     self.adminPage()
+                    global loggedAdmin
+                    loggedAdmin = admins[i]
                     break
                 else:
                     print("Checking again..")
         except:
             print("Admin already logged in")
+
+    def adminOwnPage(self):
+        global loggedAdmin
+        self.adminWindow = tk.Toplevel()
+        self.adminWindow.title(loggedAdmin.get_userName()+"'s Settings")
+        self.adminWindow.geometry("250x300")
+        self.adminWindow.resizable(0,0)
+        self.adminWindow.configure(bg="#151730")
+        #Frames
+        self.adminWindow.frame1 = tk.Frame(self.adminWindow, background="#151730")
+        self.adminWindow.frame2 = tk.Frame(self.adminWindow, background="#151730")
+        self.adminWindow.frame3 = tk.Frame(self.adminWindow, background="#151730")
+        self.adminWindow.frame4 = tk.Frame(self.adminWindow, background="#151730")
+        self.adminWindow.frame5 = tk.Frame(self.adminWindow, background="#151730")
+        self.adminWindow.frame1.pack(side="top")
+        self.adminWindow.frame2.pack(side="top")
+        self.adminWindow.frame3.pack(side="top")
+        self.adminWindow.frame4.pack(side="top")
+        self.adminWindow.frame5.pack(side="top")
+        #Content
+        self.adminWindow.userL = tk.Label(self.adminWindow.frame1, background="#151730", text=f"User: {loggedAdmin.get_userName():>10}", font=tkfont.Font(family='Helvetica', size=10, weight="bold"), fg='#c4dbff')
+        self.adminWindow.userL.pack(side="left")
+        self.adminWindow.passL = tk.Label(self.adminWindow.frame2, background="#151730", text=f"Pass: {loggedAdmin.get_pass():>10}", font=tkfont.Font(family='Helvetica', size=10, weight="bold"), fg='#c4dbff')
+        self.adminWindow.passL.pack(side="left")
+        self.adminWindow.addressL = tk.Label(self.adminWindow.frame3, background="#151730", text=f"Address: {loggedAdmin.get_address():>10}", font=tkfont.Font(family='Helvetica', size=10, weight="bold"), fg='#c4dbff')
+        self.adminWindow.addressL.pack(side="left")
+        self.adminWindow.entry = tk.Entry(self.adminWindow.frame4, background="#d3d3d3")
+        self.adminWindow.entry.pack(side="top")
+
 
     def adminDocPage(self):
         self.adDocWindow = tk.Toplevel()
@@ -178,7 +209,7 @@ class loginGUI:
             varC = f'{"Speciality:":>10} {doctors[i].get_speciality():>15}'
             varD = f'{"Number:":>10} {doctors[i].get_numb():>15}'
             varE = f'{"Address:":>10} {doctors[i].get_address():>25}'
-            varF = f'{"Patients:":>10} {str(doctors[i].get_patientString()):>25}'
+            varF = f'{"Patients:":>10} \n{str(doctors[i].get_patientString()):>25}'
             self.adDocWindow.docName.config(text=varA)
             self.adDocWindow.docID.config(text=varB)
             self.adDocWindow.docSpec.config(text=varC)
@@ -186,7 +217,7 @@ class loginGUI:
             self.adDocWindow.docAddress.config(text=varE)
             self.adDocWindow.docPats.config(text=varF)
             
-    def adminDocEdit(self):     #TODO Compelete
+    def adminDocEdit(self):     #TODO Complete this
         #get doc
         for i in self.adDocWindow.docList.curselection():
             global selectedDoc
@@ -237,7 +268,8 @@ class loginGUI:
         self.adDocEditWindow.patPlus.pack(side="right")
         self.adDocEditWindow.patRem = tk.Button(self.adDocEditWindow.patFrame, background="#d4d4d4", text="-")
         self.adDocEditWindow.patRem.pack(side="right")
-        
+    
+    #Edit property functions
     def editSpec(self):
         editingDoctor.set_speciality(self.adDocEditWindow.entry.get())
         doctors[selectedDoc] = editingDoctor
@@ -250,6 +282,7 @@ class loginGUI:
         editingDoctor.set_numb(self.adDocEditWindow.entry.get())
         doctors[selectedDoc] = editingDoctor
         self.adDocEditWindow.alertLabel.config(text="Number Changed")
+
 
     def adminDocCreate(self):
         #Window
