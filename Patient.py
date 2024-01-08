@@ -21,20 +21,28 @@ class Patient:
         return self.__secondName
     def set_secondName(self, newSecondName):
         self.__secondName = newSecondName
+    def get_fullpName(self):
+        namestr = str(self.__firstName) + " " + str(self.__secondName) 
+        return namestr
+
     def get_age(self):
         return self.__age
     def set_age(self, newAge):
         self.__age = newAge
+
     def get_doc(self):
         return self.__doc
     def set_doc(self, newDoc):
         self.__doc = newDoc
+
     def get_pID(self):
         return self.__patientID
+    
     def get_illess(self):
         return self.__illness
     def set_illness(self, diag):
         self.__illness = diag
+        
     def get_numb(self):
         return self.__number
     def set_numb(self, number):

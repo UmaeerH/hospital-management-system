@@ -1,4 +1,5 @@
 import itertools
+from Patient import Patient
 
 class Doctor:
     newid = itertools.count()
@@ -50,6 +51,12 @@ class Doctor:
         self.__patients.append(patient)
     def remove_patient(self, patient):
         self.__patients.remove(patient)
+    def get_patientString(self):
+        if len(self.__patients) != 0:
+            for i in range(len(self.__patients)):
+                return self.__patients[i].get_fullpName()
+        else:
+            return "No Patients"
 
     def get_appointment(self):
         return self.__appointments

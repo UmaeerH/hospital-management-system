@@ -2,6 +2,7 @@ import tkinter as tk
 from tkinter import ttk
 from tkinter import font as tkfont  
 import itertools
+import copy
 #Class imports
 from Admin import Admin
 from Doctor import Doctor
@@ -177,7 +178,7 @@ class loginGUI:
             varC = f'{"Speciality:":>10} {doctors[i].get_speciality():>15}'
             varD = f'{"Number:":>10} {doctors[i].get_numb():>15}'
             varE = f'{"Address:":>10} {doctors[i].get_address():>25}'
-            varF = f'{"Patients:":>10} {str(doctors[i].get_patient()):>25}'
+            varF = f'{"Patients:":>10} {str(doctors[i].get_patientString()):>25}'
             self.adDocWindow.docName.config(text=varA)
             self.adDocWindow.docID.config(text=varB)
             self.adDocWindow.docSpec.config(text=varC)
@@ -307,6 +308,10 @@ class loginGUI:
 
 
 def main():
+    testDoc = copy.deepcopy(doctors[1])
+    testDoc.add_patient(patients[2])
+    doctors[1] = testDoc
+    print(testDoc)
     loginGUI()
 
 if __name__ == "__main__":
