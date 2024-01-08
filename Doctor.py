@@ -53,8 +53,10 @@ class Doctor:
         self.__patients.remove(patient)
     def get_patientString(self):
         if len(self.__patients) != 0:
+            patList = ""
             for i in range(len(self.__patients)):
-                return self.__patients[i].get_fullpName()
+                patList += f'{self.__patients[i].get_fullpName():<20} | ID:  {self.__patients[i].get_pID()}\n'
+            return patList.strip()
         else:
             return "No Patients"
 

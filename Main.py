@@ -219,15 +219,24 @@ class loginGUI:
         self.adDocEditWindow.entry = tk.Entry(self.adDocEditWindow.nameIDFrame, background="#d4d4d4")
         self.adDocEditWindow.entry.pack(side="top")
         #Buttons
-        self.adDocEditWindow.specButton = tk.Button(self.adDocEditWindow.specFrame, background="#d4d4d4", text="Set as Specialisation", command=self.editSpec)
-        self.adDocEditWindow.addButton = tk.Button(self.adDocEditWindow.addressFrame, background="#d4d4d4", text="Set as Address", command=self.editAdd)
-        self.adDocEditWindow.numbButton = tk.Button(self.adDocEditWindow.numbFrame, background="#d4d4d4", text="Set as Number", command=self.editNumb)
+        self.adDocEditWindow.specButton = tk.Button(self.adDocEditWindow.specFrame, background="#d4d4d4", text=f'{"Set as Specialisation":^20}', command=self.editSpec)
+        self.adDocEditWindow.addButton = tk.Button(self.adDocEditWindow.addressFrame, background="#d4d4d4", text=f'{"Set as Address":^20}', command=self.editAdd)
+        self.adDocEditWindow.numbButton = tk.Button(self.adDocEditWindow.numbFrame, background="#d4d4d4", text=f'{"Set as Number":^20}', command=self.editNumb)
         self.adDocEditWindow.specButton.pack(side="top")
         self.adDocEditWindow.addButton.pack(side="top")
         self.adDocEditWindow.numbButton.pack(side="top")
         #Alert
         self.adDocEditWindow.alertLabel = tk.Label(self.adDocEditWindow.alertFrame, background="#ffa7a7", text=" ", font=tkfont.Font(family='Helvetica', size=12, weight="bold"))
         self.adDocEditWindow.alertLabel.pack(side="top")
+        #Patients
+        self.adDocEditWindow.patEntryLab = tk.Label(self.adDocEditWindow.patFrame, background="#d4d4d4", text="PatientID")
+        self.adDocEditWindow.patEntryLab.pack(side="left")
+        self.adDocEditWindow.patEntry = tk.Entry(self.adDocEditWindow.patFrame, background="#d4d4d4")
+        self.adDocEditWindow.patEntry.pack(side="left")
+        self.adDocEditWindow.patPlus = tk.Button(self.adDocEditWindow.patFrame, background="#d4d4d4", text="+")
+        self.adDocEditWindow.patPlus.pack(side="right")
+        self.adDocEditWindow.patRem = tk.Button(self.adDocEditWindow.patFrame, background="#d4d4d4", text="-")
+        self.adDocEditWindow.patRem.pack(side="right")
         
     def editSpec(self):
         editingDoctor.set_speciality(self.adDocEditWindow.entry.get())
@@ -354,6 +363,7 @@ class loginGUI:
 def main():
     testDoc = copy.deepcopy(doctors[1])
     testDoc.add_patient(patients[2])
+    testDoc.add_patient(patients[1])
     doctors[1] = testDoc
     loginGUI()
 
