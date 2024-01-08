@@ -12,6 +12,8 @@ doctors = [Doctor('John','Smith','Internal Med.'), Doctor('Will','Robinson','Ped
 patients = [Patient('Sara','Smith', 20, '07012345678','B1 234'), Patient('Mike','Jones', 37,'07555551234','L2 2AB'), Patient('Daivd','Smith', 15, '07123456789','C1 ABC')]
 discharged_patients = []
 
+#TODO   "text files to store the patient’s related information" -- no worries about saving to these files, or doctor/admin files
+
 class loginGUI:
     #INITIAL WINDOW
     def __init__(self):
@@ -70,7 +72,7 @@ class loginGUI:
         self.window.logButton = tk.Button(self.window.botAdminLogFrame, text="Log-in", bg="#d4d4d4", command=self.attempted)
         self.window.logButton.pack(side="bottom")
 
-    #WINDOW FOR ADMIN
+    #WINDOW FOR ADMIN       #TODO Admin can edit own stuff
     def adminPage(self):
         self.adWindow = tk.Toplevel()
         self.adWindow.title("Admin Home")
@@ -89,15 +91,17 @@ class loginGUI:
         #Content
         self.adWindow.header = tk.Label(self.adWindow.topAdminFrame, text="Admin View", background="#d6d4ff", font=tkfont.Font(family='Helvetica', size=18, weight="bold"))
         self.adWindow.header.pack(side="top")
+        self.adWindow.header.grid(pady=5)
         self.adWindow.docButton = tk.Button(self.adWindow.midAdminFrame, text="View Doctors", bg="#d4d4d4", command=self.adminDocPage) 
         self.adWindow.docButton.pack(side="left")
-        self.adWindow.docButton.grid(row=0, column=2, padx=10, pady=5)
+        self.adWindow.docButton.grid(row=1, column=1, padx=10, pady=2)
         self.adWindow.patButton = tk.Button(self.adWindow.botAdminFrame, text="View Patients", bg="#d4d4d4", command=self.attempted)        #Placeholder commands
         self.adWindow.patButton.pack(side="left")
-        self.adWindow.patButton.grid(row=0, column=2, padx=10, pady=5)
+        self.adWindow.patButton.grid(row=2, column=1, padx=10, pady=10)
         self.adWindow.reportButton = tk.Button(self.adWindow.bot2AdminFrame, text="Management Report", bg="#d4d4d4", command=self.attempted)        #Placeholder commands
         self.adWindow.reportButton.pack(side="left")
-        self.adWindow.reportButton.grid(row=0, column=2, padx=10, pady=5)
+        self.adWindow.editButton = tk.Button(self.adWindow.bot2AdminFrame, text="Account Details", bg="#d4d4d4", command=self.attempted)        #Placeholder commands
+        self.adWindow.editButton.pack(side="right")
 
 
     def attempted(self):
@@ -222,24 +226,35 @@ class loginGUI:
         self.adDocCreateWindow.specialityE = tk.Entry(self.adDocCreateWindow.specFrame, background="#d4d4d4")
         self.adDocCreateWindow.specialityE.pack(side="left")
         self.adDocCreateWindow.createButton = tk.Button(self.adDocCreateWindow.botFrame, text="Create Doctor", command=self.doctorCreate, background="#d4d4d4")
-        self.adDocCreateWindow.createButton.pack(side="left")
+        self.adDocCreateWindow.createButton.pack(side="top")
+        self.adDocCreateWindow.warningText = tk.Label(self.adDocCreateWindow.botFrame, text=" ", background="#a7c194", font=tkfont.Font(family='Helvetica', size=14, weight="bold"))
+        self.adDocCreateWindow.warningText.pack(side="top")
 
 
     def doctorCreate(self):
-        #Get
+        #Get Entered info
         enteredName = self.adDocCreateWindow.nameE.get()
         enteredSname = self.adDocCreateWindow.surnameE.get()
         enteredSpec = self.adDocCreateWindow.specialityE.get()
-        try:
-            new_doc = Doctor(enteredName, enteredSname, enteredSpec)
-            doctors.append(new_doc)
-        except:
-            print("Error creating doctor")
-        else:
-            self.adDocWindow.docList.delete(0, len(doctors))
-            for i in range(len(doctors)):           #List update
-                self.adDocWindow.docList.insert(i+1, doctors[i].get_fullName())
-
+        #TODO IF-Else statement that checks if same names are taken, if so, it should warn the user
+        dupeCheck = False
+        for i in range(len(doctors)):
+            if enteredName == doctors[i].get_firstName() and enteredSname == doctors[i].get_secondName():
+                print("Name taken")
+                dupeCheck = True
+                self.adDocCreateWindow.warningText.config(text="Name already taken")
+                break
+        if dupeCheck == False:
+            try:
+                new_doc = Doctor(enteredName, enteredSname, enteredSpec)
+                doctors.append(new_doc)
+            except:
+                print("Error creating doctor")
+            else:           #List update
+                self.adDocWindow.docList.delete(0, len(doctors))
+                self.adDocCreateWindow.warningText.config(text="Doctor Added")
+                for i in range(len(doctors)):
+                    self.adDocWindow.docList.insert(i+1, doctors[i].get_fullName())
     def docPage(self):
         #window properties
         self.docLogWindow = tk.Toplevel()
