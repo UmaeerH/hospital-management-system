@@ -36,7 +36,7 @@ class loginGUI:
         self.adminButton.pack(side="top")
         self.adminButton.grid(row=0, column=1, padx=10, pady=5)
 
-        self.doctorButton = tk.Button(self.midFrame, text="DOCTOR", command=self.docPage, background="#69bad1")
+        self.doctorButton = tk.Button(self.midFrame, text="DOCTOR", command=self.docLogPage, background="#69bad1")
         self.doctorButton.pack(side="left")
         self.doctorButton.grid(row=0, column=1, padx=10, pady=5)
 
@@ -185,7 +185,7 @@ class loginGUI:
             self.adDocWindow.docAddress.config(text=varE)
             self.adDocWindow.docPats.config(text=varF)
             
-    def adminDocEdit(self):
+    def adminDocEdit(self):     #TODO Compelete
         #get doc
         for i in self.adDocWindow.docList.curselection():
             selectedDoc = i
@@ -233,10 +233,9 @@ class loginGUI:
 
     def doctorCreate(self):
         #Get Entered info
-        enteredName = self.adDocCreateWindow.nameE.get()
-        enteredSname = self.adDocCreateWindow.surnameE.get()
-        enteredSpec = self.adDocCreateWindow.specialityE.get()
-        #TODO IF-Else statement that checks if same names are taken, if so, it should warn the user
+        enteredName = self.adDocCreateWindow.nameE.get().capitalize()
+        enteredSname = self.adDocCreateWindow.surnameE.get().capitalize()
+        enteredSpec = self.adDocCreateWindow.specialityE.get().capitalize()
         dupeCheck = False
         for i in range(len(doctors)):
             if enteredName == doctors[i].get_firstName() and enteredSname == doctors[i].get_secondName():
@@ -255,7 +254,10 @@ class loginGUI:
                 self.adDocCreateWindow.warningText.config(text="Doctor Added")
                 for i in range(len(doctors)):
                     self.adDocWindow.docList.insert(i+1, doctors[i].get_fullName())
-    def docPage(self):
+
+#DOCTOR's SECTION
+
+    def docLogPage(self):
         #window properties
         self.docLogWindow = tk.Toplevel()
         self.docLogWindow.title("Doctor Log-in")
@@ -274,8 +276,21 @@ class loginGUI:
         self.docLogWindow.idLabel.pack(side="left")
         self.docLogWindow.enterID = tk.Entry(self.docLogWindow.topDocLogFrame, width=14, bg="#1dd48e")
         self.docLogWindow.enterID.pack(side="left")
-        self.docLogWindow.logButton = tk.Button(self.docLogWindow.botDocLogFrame, text="Log-in", bg="#1dd48e", command=self.attempted) #Placeholder command
+        self.docLogWindow.logButton = tk.Button(self.docLogWindow.botDocLogFrame, text="Log-in", bg="#1dd48e", command=self.docLogin) #Placeholder command
         self.docLogWindow.logButton.pack(side="bottom")
+
+    def docLogin(self):
+        try:
+            enteredID = self.docLogWindow.enterID.get()
+            print("Login button was clicked")
+            for i in range(len(doctors)):
+                if enteredID.lower() == doctors[i].get_docID():
+                    print("Login verified")
+                    self.adminPage()
+                    break
+        except:
+            print("Error logging in")
+
 
     def patPage(self):
         print("WIP PATIENT")
