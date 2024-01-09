@@ -58,7 +58,7 @@ class loginGUI:
         #frames
         self.window.topAdminLogFrame = tk.Frame(self.window)
         self.window.midAdminLogFrame = tk.Frame(self.window)
-        self.window.botAdminLogFrame = tk.Frame(self.window)
+        self.window.botAdminLogFrame = tk.Frame(self.window, background="#d6d4ff")
         self.window.topAdminLogFrame.pack(side="top")
         self.window.midAdminLogFrame.pack(side="top")
         self.window.botAdminLogFrame.pack(side="top")
@@ -72,7 +72,9 @@ class loginGUI:
         self.window.enterPass = tk.Entry(self.window.midAdminLogFrame, width=14, bg="#d4d4d4")
         self.window.enterPass.pack(side="left")
         self.window.logButton = tk.Button(self.window.botAdminLogFrame, text="Log-in", bg="#d4d4d4", command=self.attempted)
-        self.window.logButton.pack(side="bottom")
+        self.window.logButton.pack(side="top")
+        self.window.textLabel = tk.Label(self.window.botAdminLogFrame, text="Case sensitive", bg="#d6d4ff", font=tkfont.Font(family='Helvetica', size=8))
+        self.window.textLabel.pack(side="top")
 
     #WINDOW FOR ADMIN       #TODO Admin can edit own stuff
     def adminPage(self):
@@ -97,7 +99,7 @@ class loginGUI:
         self.adWindow.docButton = tk.Button(self.adWindow.midAdminFrame, text="View Doctors", bg="#d4d4d4", command=self.adminDocPage) 
         self.adWindow.docButton.pack(side="left")
         self.adWindow.docButton.grid(row=1, column=1, padx=10, pady=2)
-        self.adWindow.patButton = tk.Button(self.adWindow.botAdminFrame, text="View Patients", bg="#d4d4d4", command=self.attempted)        #Placeholder commands
+        self.adWindow.patButton = tk.Button(self.adWindow.botAdminFrame, text="View Patients", bg="#d4d4d4", command=self.adminPatPage)
         self.adWindow.patButton.pack(side="left")
         self.adWindow.patButton.grid(row=2, column=1, padx=10, pady=10)
         self.adWindow.reportButton = tk.Button(self.adWindow.bot2AdminFrame, text="Management Report", bg="#d4d4d4", command=self.attempted)        #Placeholder commands
@@ -117,6 +119,10 @@ class loginGUI:
                     self.adminPage()
                     global loggedAdmin
                     loggedAdmin = admins[i]
+                    global editingAdmin
+                    editingAdmin = copy.deepcopy(admins[i])
+                    global adminIndex
+                    adminIndex = i
                     break
                 else:
                     print("Checking again..")
@@ -150,6 +156,34 @@ class loginGUI:
         self.adminWindow.addressL.pack(side="left")
         self.adminWindow.entry = tk.Entry(self.adminWindow.frame4, background="#d3d3d3")
         self.adminWindow.entry.pack(side="top")
+        self.adminWindow.entry.grid(row=1, column=1, padx=10, pady=10)
+        self.adminWindow.setName = tk.Button(self.adminWindow.frame5, background="#d3d3d3", text="Set as Username", command=self.changeUser)
+        self.adminWindow.setName.pack(side="top")
+        self.adminWindow.setPass = tk.Button(self.adminWindow.frame5, background="#d3d3d3", text="Set as Password", command=self.changePass)
+        self.adminWindow.setPass.pack(side="top")
+        self.adminWindow.setAdd = tk.Button(self.adminWindow.frame5, background="#d3d3d3", text="Set as Address", command=self.changeAddress)
+        self.adminWindow.setAdd.pack(side="top")
+
+    def changeUser(self):
+        editingAdmin.set_userName(self.adminWindow.entry.get())
+        admins[adminIndex] = editingAdmin
+        global loggedAdmin
+        loggedAdmin = editingAdmin
+        self.adminWindow.userL.config(text=f"User: {loggedAdmin.get_userName():>10}")
+
+    def changePass(self):
+        editingAdmin.set_pass(self.adminWindow.entry.get())
+        admins[adminIndex] = editingAdmin
+        global loggedAdmin
+        loggedAdmin = editingAdmin
+        self.adminWindow.passL.config(text=f"Pass: {loggedAdmin.get_pass():>10}")
+
+    def changeAddress(self):
+        editingAdmin.set_address(self.adminWindow.entry.get())
+        admins[adminIndex] = editingAdmin
+        global loggedAdmin
+        loggedAdmin = editingAdmin    
+        self.adminWindow.addressL.config(text=f"Address: {loggedAdmin.get_address():>10}")
 
 
     def adminDocPage(self):
@@ -341,6 +375,16 @@ class loginGUI:
                 self.adDocCreateWindow.warningText.config(text="Doctor Added")
                 for i in range(len(doctors)):
                     self.adDocWindow.docList.insert(i+1, doctors[i].get_fullName())
+
+
+    def adminPatPage(self):
+        self.adDocWindow = tk.Toplevel()
+        self.adDocWindow.title("View Patients")
+        self.adDocWindow.geometry("500x450")
+        self.adDocWindow.resizable(0,0)
+        self.adDocWindow.configure(bg="#aab9e6")
+
+
 
 #DOCTOR'S SECTION
 
