@@ -52,6 +52,7 @@ class Doctor:
         patient.set_doc(self.__docID)
     def remove_patient(self, patient):
         self.__patients.remove(patient)
+        patient.set_doc("Unassigned")
     def get_patientString(self):
         if len(self.__patients) != 0:
             patList = ""

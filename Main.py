@@ -296,7 +296,7 @@ class loginGUI:
         self.adDocEditWindow.alertLabel = tk.Label(self.adDocEditWindow.alertFrame, background="#ffa7a7", text=" ", font=tkfont.Font(family='Helvetica', size=12, weight="bold"))
         self.adDocEditWindow.alertLabel.pack(side="top")
         #Patients
-        self.adDocEditWindow.patEntryLab = tk.Label(self.adDocEditWindow.patFrame, background="#d4d4d4", text="PatientID")
+        self.adDocEditWindow.patEntryLab = tk.Label(self.adDocEditWindow.patFrame, background="#d4d4d4", text="PatientID:")
         self.adDocEditWindow.patEntryLab.pack(side="left")
         self.adDocEditWindow.patEntry = tk.Entry(self.adDocEditWindow.patFrame, background="#d4d4d4")
         self.adDocEditWindow.patEntry.pack(side="left")
@@ -304,7 +304,7 @@ class loginGUI:
         self.adDocEditWindow.patPlus.pack(side="right")
         self.adDocEditWindow.patRem = tk.Button(self.adDocEditWindow.patFrame, background="#d4d4d4", text="-", command=self.patientRemove)
         self.adDocEditWindow.patRem.pack(side="right")
-        self.adDocEditWindow.patLabel = tk.Label(self.adDocEditWindow.patFrame2, background="#ffa7a7", text="___", font=tkfont.Font(family='Helvetica', size=12, weight="bold"))
+        self.adDocEditWindow.patLabel = tk.Label(self.adDocEditWindow.patFrame2, background="#ffa7a7", text="Waiting for action", font=tkfont.Font(family='Helvetica', size=10, weight="bold"))
         self.adDocEditWindow.patLabel.pack(side="top")
     
     #Edit property functions
@@ -330,14 +330,29 @@ class loginGUI:
                     self.adDocEditWindow.patLabel.config(text=f"Patient already assigned to {patients[i].get_doc()}")
                 else:
                     editingDoctor.add_patient(patients[i])
+                    tempPat = copy.deepcopy(patients[i])
+                    tempPat.set_doc(editingDoctor.get_docID())
+                    patients[i] = tempPat
                     doctors[selectedDoc] = editingDoctor
                     self.adDocEditWindow.patLabel.config(text="Patient has been assigned")
+                    print(patients[i])
                 break
+            else:
+                self.adDocEditWindow.patLabel.config(text="Patient ID not found")
 
 
     def patientRemove(self):
-        return True
-    
+        global editingDoctor
+        enteredPat = self.adDocEditWindow.patEntry.get()
+        patList = editingDoctor.get_patient()
+        for i in range(len(patList)):
+            temppat = editingDoctor.__patients[i]
+            if enteredPat.lower() == temppat.get_pID():
+                editingDoctor.remove_patient(temppat)
+                print("pat removed")
+                doctors[selectedDoc] = editingDoctor
+            else:
+                print("Cannot find pat in list")
 
     def adminDocCreate(self):
         #Window
