@@ -213,7 +213,7 @@ class loginGUI:
         self.adDocWindow.docList.pack(side="left")
         self.adDocWindow.docList.grid(row=0, column=1, padx=10, pady=5)
         for i in range(len(doctors)):           #List generation
-            self.adDocWindow.docList.insert(i+1, doctors[i].get_fullName())
+            self.adDocWindow.docList.insert(i+1, f'{doctors[i].get_fullName()}  |  {doctors[i].get_docID()}')
         self.adDocWindow.showButton = tk.Button(self.adDocWindow.midFrame, text='Show Doc info', command=self.docInfoDisp, background="#ff9797")
         self.adDocWindow.showButton.pack(side="left")
         self.adDocWindow.editButton = tk.Button(self.adDocWindow.midFrame, text="Edit Doc info", command=self.adminDocEdit, background="#ff9797")
@@ -271,12 +271,14 @@ class loginGUI:
         self.adDocEditWindow.numbFrame = tk.Frame(self.adDocEditWindow, background="#ffa7a7")
         self.adDocEditWindow.alertFrame = tk.Frame(self.adDocEditWindow, background="#ffa7a7")
         self.adDocEditWindow.patFrame = tk.Frame(self.adDocEditWindow, background="#ffa7a7")
+        self.adDocEditWindow.patFrame2 = tk.Frame(self.adDocEditWindow, background="#ffa7a7")
         self.adDocEditWindow.nameIDFrame.pack(side="top")
         self.adDocEditWindow.specFrame.pack(side="top")
         self.adDocEditWindow.addressFrame.pack(side="top")
         self.adDocEditWindow.numbFrame.pack(side="top")
         self.adDocEditWindow.alertFrame.pack(side="top")
         self.adDocEditWindow.patFrame.pack(side="top")
+        self.adDocEditWindow.patFrame2.pack(side="top")
         #Content
         nameID = f'{editingDoctor.get_fullName():<15}|{editingDoctor.get_docID():^5}'
         self.adDocEditWindow.nameLab = tk.Label(self.adDocEditWindow.nameIDFrame, background="#ffa7a7", text=nameID, font=tkfont.Font(family='Helvetica', size=12, weight="bold"))
@@ -302,6 +304,8 @@ class loginGUI:
         self.adDocEditWindow.patPlus.pack(side="right")
         self.adDocEditWindow.patRem = tk.Button(self.adDocEditWindow.patFrame, background="#d4d4d4", text="-", command=self.patientRemove)
         self.adDocEditWindow.patRem.pack(side="right")
+        self.adDocEditWindow.patLabel = tk.Label(self.adDocEditWindow.patFrame2, background="#ffa7a7", text="___", font=tkfont.Font(family='Helvetica', size=12, weight="bold"))
+        self.adDocEditWindow.patLabel.pack(side="top")
     
     #Edit property functions
     def editSpec(self):
@@ -323,12 +327,12 @@ class loginGUI:
             if enteredPat.lower() == patients[i].get_pID():
                 print("Found patient")
                 if patients[i].get_doc() != "Unassigned":
-                    print("Doctor already assigned")
+                    self.adDocEditWindow.patLabel.config(text=f"Patient already assigned to {patients[i].get_doc()}")
                 else:
-                    print("Can assign")
+                    editingDoctor.add_patient(patients[i])
+                    doctors[selectedDoc] = editingDoctor
+                    self.adDocEditWindow.patLabel.config(text="Patient has been assigned")
                 break
-            else:
-                print("Running again")
 
 
     def patientRemove(self):
@@ -391,7 +395,7 @@ class loginGUI:
                 self.adDocWindow.docList.delete(0, len(doctors))
                 self.adDocCreateWindow.warningText.config(text="Doctor Added")
                 for i in range(len(doctors)):
-                    self.adDocWindow.docList.insert(i+1, doctors[i].get_fullName())
+                    self.adDocWindow.docList.insert(i+1, f'{doctors[i].get_fullName()}  |  {doctors[i].get_docID()}')
 
 
     def adminPatPage(self):
