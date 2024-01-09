@@ -298,9 +298,9 @@ class loginGUI:
         self.adDocEditWindow.patEntryLab.pack(side="left")
         self.adDocEditWindow.patEntry = tk.Entry(self.adDocEditWindow.patFrame, background="#d4d4d4")
         self.adDocEditWindow.patEntry.pack(side="left")
-        self.adDocEditWindow.patPlus = tk.Button(self.adDocEditWindow.patFrame, background="#d4d4d4", text="+")
+        self.adDocEditWindow.patPlus = tk.Button(self.adDocEditWindow.patFrame, background="#d4d4d4", text="+", command=self.patientAdd)
         self.adDocEditWindow.patPlus.pack(side="right")
-        self.adDocEditWindow.patRem = tk.Button(self.adDocEditWindow.patFrame, background="#d4d4d4", text="-")
+        self.adDocEditWindow.patRem = tk.Button(self.adDocEditWindow.patFrame, background="#d4d4d4", text="-", command=self.patientRemove)
         self.adDocEditWindow.patRem.pack(side="right")
     
     #Edit property functions
@@ -317,6 +317,23 @@ class loginGUI:
         doctors[selectedDoc] = editingDoctor
         self.adDocEditWindow.alertLabel.config(text="Number Changed")
 
+    def patientAdd(self):
+        enteredPat = self.adDocEditWindow.patEntry.get()
+        for i in range(len(patients)):
+            if enteredPat.lower() == patients[i].get_pID():
+                print("Found patient")
+                if patients[i].get_doc() != "Unassigned":
+                    print("Doctor already assigned")
+                else:
+                    print("Can assign")
+                break
+            else:
+                print("Running again")
+
+
+    def patientRemove(self):
+        return True
+    
 
     def adminDocCreate(self):
         #Window
