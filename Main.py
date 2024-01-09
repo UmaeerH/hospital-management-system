@@ -340,19 +340,25 @@ class loginGUI:
             else:
                 self.adDocEditWindow.patLabel.config(text="Patient ID not found")
 
-
     def patientRemove(self):
-        global editingDoctor
         enteredPat = self.adDocEditWindow.patEntry.get()
-        patList = editingDoctor.get_patient()
-        for i in range(len(patList)):
-            temppat = editingDoctor.__patients[i]
-            if enteredPat.lower() == temppat.get_pID():
-                editingDoctor.remove_patient(temppat)
-                print("pat removed")
-                doctors[selectedDoc] = editingDoctor
+        for i in range(len(editingDoctor.get_patient())):
+            if enteredPat.lower() == patients[i].get_pID():
+                print("Found patient")
+                if patients[i].get_doc() == "Unassigned":
+                    self.adDocEditWindow.patLabel.config(text="Patient already unassigned")
+                elif patients[i].get_doc() == editingDoctor.get_docID():
+                    tempPatRem = copy.deepcopy(patients[i])
+                    editingDoctor.remove_patient(i)
+                    tempPatRem.set_doc("Unassigned")
+                    patients[i] = tempPatRem
+                    doctors[selectedDoc] = editingDoctor
+                    self.adDocEditWindow.patLabel.config(text="Patient has been unassigned")
+                    print(patients[i])
+                else:
+                    self.adDocEditWindow.patLabel.config(text="Patient is with another doctor")
             else:
-                print("Cannot find pat in list")
+                self.adDocEditWindow.patLabel.config(text="Patient ID not found")
 
     def adminDocCreate(self):
         #Window
@@ -474,10 +480,10 @@ class loginGUI:
 
 
 def main():
-    testDoc = copy.deepcopy(doctors[1])
-    testDoc.add_patient(patients[2])
-    testDoc.add_patient(patients[1])
-    doctors[1] = testDoc
+    #testDoc = copy.deepcopy(doctors[1])
+    #testDoc.add_patient(patients[2])
+    #testDoc.add_patient(patients[1])
+    #doctors[1] = testDoc
     loginGUI()
 
 if __name__ == "__main__":

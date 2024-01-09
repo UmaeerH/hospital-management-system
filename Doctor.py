@@ -50,9 +50,8 @@ class Doctor:
     def add_patient(self, patient):
         self.__patients.append(patient)
         patient.set_doc(self.__docID)
-    def remove_patient(self, patient):
-        self.__patients.remove(patient)
-        patient.set_doc("Unassigned")
+    def remove_patient(self, patientpos):
+        self.__patients.pop(patientpos)
     def get_patientString(self):
         if len(self.__patients) != 0:
             patList = ""
