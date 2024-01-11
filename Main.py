@@ -626,7 +626,7 @@ class loginGUI:
         self.adPatCreateWindow.ageL.pack(side="left")
         self.adPatCreateWindow.ageE = tk.Entry(self.adPatCreateWindow.ageFrame, background="#d4d4d4")
         self.adPatCreateWindow.ageE.pack(side="left")
-        self.adPatCreateWindow.createButton = tk.Button(self.adPatCreateWindow.buttonFrame, text="Create Doctor", command=self.patientCreate, background="#d4d4d4")
+        self.adPatCreateWindow.createButton = tk.Button(self.adPatCreateWindow.buttonFrame, text="Create Patient", command=self.patientCreate, background="#d4d4d4")
         self.adPatCreateWindow.createButton.pack(side="top")
         self.adPatCreateWindow.warningText = tk.Label(self.adPatCreateWindow.buttonFrame, text=" ", background="#a7c194", font=tkfont.Font(family='Helvetica', size=14, weight="bold"))
         self.adPatCreateWindow.warningText.pack(side="top")
