@@ -418,7 +418,6 @@ class loginGUI:
                 for i in range(len(doctors)):
                     self.adDocWindow.docList.insert(i+1, f'{doctors[i].get_fullName()}  |  {doctors[i].get_docID()}')
 
-
     def adminPatPage(self):
         self.adPatWindow = tk.Toplevel()
         self.adPatWindow.title("View Patients")
@@ -500,12 +499,14 @@ class loginGUI:
         self.adPatEditWindow.IllnessFrame = tk.Frame(self.adPatEditWindow, background="#aab9e6")
         self.adPatEditWindow.EntryFrame = tk.Frame(self.adPatEditWindow, background="#aab9e6")
         self.adPatEditWindow.alertFrame = tk.Frame(self.adPatEditWindow, background="#aab9e6")
+        self.adPatEditWindow.namebuttonFrame = tk.Frame(self.adPatEditWindow, background="#aab9e6")
         self.adPatEditWindow.buttonFrame = tk.Frame(self.adPatEditWindow, background="#aab9e6")
         self.adPatEditWindow.nameIDFrame.pack(side="top")
         self.adPatEditWindow.doctorFrame.pack(side="top")
         self.adPatEditWindow.IllnessFrame.pack(side="top")
         self.adPatEditWindow.EntryFrame.pack(side="top")
         self.adPatEditWindow.alertFrame.pack(side="top")
+        self.adPatEditWindow.namebuttonFrame.pack(side="top")
         self.adPatEditWindow.buttonFrame.pack(side="top")
         #Content
         pnameID = f'{editingPat.get_fullpName():<15}|{editingPat.get_pID():^5}'
@@ -515,6 +516,51 @@ class loginGUI:
         self.adPatEditWindow.doctorLab.pack(side="top")
         self.adPatEditWindow.illnessLab = tk.Label(self.adPatEditWindow.IllnessFrame, background="#aab9e6", text=f'Diagnosis:  {editingPat.get_illess()}')
         self.adPatEditWindow.illnessLab.pack(side="top")
+        self.adPatEditWindow.entry = tk.Entry(self.adPatEditWindow.EntryFrame, background="#a7b0c9")
+        self.adPatEditWindow.entry.pack(side="top")
+        self.adPatEditWindow.alertLabel = tk.Label(self.adPatEditWindow.alertFrame, background="#aab9e6", text=" ")
+        self.adPatEditWindow.alertLabel.pack(side="top")
+        #Buttons
+        self.adPatEditWindow.nameButton = tk.Button(self.adPatEditWindow.namebuttonFrame, background="#a7b0c9", text="Set as First Name", command=self.patEditName1)
+        self.adPatEditWindow.surnameButton = tk.Button(self.adPatEditWindow.namebuttonFrame, background="#a7b0c9", text="Set as Second Name", command=self.patEditName2)
+        self.adPatEditWindow.ageButton = tk.Button(self.adPatEditWindow.buttonFrame, background="#a7b0c9", text="Set as Age", command=self.patEditAge)
+        self.adPatEditWindow.numbButton = tk.Button(self.adPatEditWindow.buttonFrame, background="#a7b0c9", text="Set as Number", command=self.patEditNumb)
+        self.adPatEditWindow.AddButton = tk.Button(self.adPatEditWindow.buttonFrame, background="#a7b0c9", text="Set as Address", command=self.patEditAdd)
+        self.adPatEditWindow.nameButton.pack(side="left")
+        self.adPatEditWindow.surnameButton.pack(side="left")
+        self.adPatEditWindow.ageButton.pack(side="top")
+        self.adPatEditWindow.numbButton.pack(side="top")
+        self.adPatEditWindow.AddButton.pack(side="top")
+
+    def patEditName1(self):
+        editingPat.set_firstName(self.adPatEditWindow.entry.get())
+        patients[selectedPat] = editingPat
+        self.adPatEditWindow.alertLabel.config(text="First Name Changed")
+
+    def patEditName2(self):
+        editingPat.set_secondName(self.adPatEditWindow.entry.get())
+        patients[selectedPat] = editingPat
+        self.adPatEditWindow.alertLabel.config(text="Second Name Changed")
+
+    def patEditAge(self):
+        try:
+            int(self.adPatEditWindow.entry.get())
+        except:
+            self.adPatEditWindow.alertLabel.config(text="Not a valid age")
+        else:
+            editingPat.set_age(self.adPatEditWindow.entry.get())
+            patients[selectedPat] = editingPat
+            self.adPatEditWindow.alertLabel.config(text="Age changed")
+
+    def patEditNumb(self):
+        editingPat.set_numb(self.adPatEditWindow.entry.get())
+        patients[selectedPat] = editingPat
+        self.adPatEditWindow.alertLabel.config(text="Number Changed")
+
+    def patEditAdd(self):
+        editingPat.set_address(self.adPatEditWindow.entry.get())
+        patients[selectedPat] = editingPat
+        self.adPatEditWindow.alertLabel.config(text="Address Changed")
 
     def adminPatCreate(self):
         print("Wasd")
