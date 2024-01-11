@@ -3,6 +3,8 @@ from tkinter import ttk
 from tkinter import font as tkfont  
 import itertools
 import copy
+import csv
+import sys
 #Class imports
 from Admin import Admin
 from Doctor import Doctor
@@ -10,7 +12,8 @@ from Patient import Patient
 #ACTORS
 admins = [Admin('admin','123','B1 1AB'), Admin('admin2','242','B2 1AB')] # username is 'admin', password is '123'
 doctors = [Doctor('John','Smith','Internal Med.'), Doctor('Will','Robinson','Pediatrics'), Doctor('Jone','Carlos','Cardiology'), Doctor("Irie", "Ford", "Pediatrics", "B1 1AB", "+4472794272")]
-patients = [Patient('Sara','Smith', 20, '07012345678','B1 234'), Patient('Mike','Jones', 37,'07555551234','L2 2AB'), Patient('David','Smith', 15, '07123456789','C1 ABC')]
+#patients = [Patient('Sara','Smith', 20, '07012345678','B1 234'), Patient('Mike','Jones', 37,'07555551234','L2 2AB'), Patient('David','Smith', 15, '07123456789','C1 ABC')]
+patients = []
 discharged_patients = []
 
 #TODO   "text files to store the patient’s related information" -- no worries about saving to these files, or doctor/admin files
@@ -741,12 +744,15 @@ class loginGUI:
     def patPage(self):
         print("WIP PATIENT")
 
+def readPatients():
+    with open("patients.csv", "r") as csvFile:
+        reader = csv.reader(csvFile)
+        for row in reader:
+            scannedPat = Patient(*row)
+            patients.append(scannedPat)
 
 def main():
-    #testDoc = copy.deepcopy(doctors[1])
-    #testDoc.add_patient(patients[2])
-    #testDoc.add_patient(patients[1])
-    #doctors[1] = testDoc
+    readPatients()
     loginGUI()
 
 if __name__ == "__main__":
