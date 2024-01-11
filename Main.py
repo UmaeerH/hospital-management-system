@@ -777,10 +777,14 @@ class loginGUI:
         self.docPatViewWindow.ageFrame = tk.Frame(self.docPatViewWindow, background="#58f9bb")
         self.docPatViewWindow.sympFrame = tk.Frame(self.docPatViewWindow, background="#58f9bb")
         self.docPatViewWindow.apptsFrame = tk.Frame(self.docPatViewWindow, background="#58f9bb")
+        self.docPatViewWindow.entryFrame = tk.Frame(self.docPatViewWindow, background="#58f9bb")
+        self.docPatViewWindow.buttonsFrame = tk.Frame(self.docPatViewWindow, background="#58f9bb")
         self.docPatViewWindow.nameFrame.pack(side="top")
         self.docPatViewWindow.ageFrame.pack(side="top")
         self.docPatViewWindow.sympFrame.pack(side="top")
         self.docPatViewWindow.apptsFrame.pack(side="top")
+        self.docPatViewWindow.entryFrame.pack(side="top")
+        self.docPatViewWindow.buttonsFrame.pack(side="top")
         #Content
         self.docPatViewWindow.header = tk.Label(self.docPatViewWindow.nameFrame, background="#58f9bb", text=f'{docEditingPat.get_fullpName():<15}|{docEditingPat.get_pID():>5}', font=tkfont.Font(family='Helvetica', size=14, weight="bold"))
         self.docPatViewWindow.header.pack(side="top")
@@ -790,7 +794,40 @@ class loginGUI:
         self.docPatViewWindow.illness.pack(side="top")
         self.docPatViewWindow.apts = tk.Label(self.docPatViewWindow.apptsFrame, text=f'Appointments:  {docEditingPat.get_appointment()}')
         self.docPatViewWindow.apts.pack(side="top")
+        #Buttons and entry
+        self.docPatViewWindow.entry = tk.Entry(self.docPatViewWindow.entryFrame, background="#f4f4f4")
+        self.docPatViewWindow.entry.pack(side="top")
+        self.docPatViewWindow.alert = tk.Label(self.docPatViewWindow.entryFrame, text="", background="#58f9bb", font=tkfont.Font(family='Helvetica', size=14))
+        self.docPatViewWindow.alert.pack(side="top")
+        self.docPatViewWindow.AddAppointment = tk.Button(self.docPatViewWindow.buttonsFrame, background="#f5f5f5", text="Add appointment", command=self.addAppointmentcmd)
+        self.docPatViewWindow.AddAppointment.pack(side="left")
+        self.docPatViewWindow.changeIllness = tk.Button(self.docPatViewWindow.buttonsFrame, background="#f5f5f5", text="Set as illness", command=self.illnessChange)
+        self.docPatViewWindow.changeIllness.pack(side="left")
 
+    def addAppointmentcmd(self):
+        input = self.docPatViewWindow.entry.get()
+        global docEditingPat
+        global docSelectedPat
+        try:
+            docEditingPat.add_appointment(input)
+        except:
+            self.docPatViewWindow.alert.config(text="Error adding date")
+        else:
+            ownList[docSelectedPat] = docEditingPat
+            self.docPatViewWindow.alert.config(text="Added Appointment")
+        
+
+    def illnessChange(self):
+        input = self.docPatViewWindow.entry.get()
+        global docEditingPat
+        global docSelectedPat
+        try:
+            docEditingPat.set_illness(input)
+        except:
+            self.docPatViewWindow.alert.config(text="Error changing illness")
+        else:
+            ownList[docSelectedPat] = docEditingPat
+            self.docPatViewWindow.alert.config(text="Illness successfully changed")
 
     def patPage(self):
         print("WIP PATIENT")
