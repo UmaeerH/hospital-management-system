@@ -251,7 +251,7 @@ class loginGUI:
             self.adDocWindow.docAddress.config(text=varE)
             self.adDocWindow.docPats.config(text=varF)
             
-    def adminDocEdit(self):     #TODO Complete this
+    def adminDocEdit(self):
         #get doc
         for i in self.adDocWindow.docList.curselection():
             global selectedDoc
@@ -420,13 +420,44 @@ class loginGUI:
 
 
     def adminPatPage(self):
-        self.adDocWindow = tk.Toplevel()
-        self.adDocWindow.title("View Patients")
-        self.adDocWindow.geometry("500x450")
-        self.adDocWindow.resizable(0,0)
-        self.adDocWindow.configure(bg="#aab9e6")
+        self.adPatWindow = tk.Toplevel()
+        self.adPatWindow.title("View Patients")
+        self.adPatWindow.geometry("500x450")
+        self.adPatWindow.resizable(0,0)
+        self.adPatWindow.configure(bg="#aab9e6")
+        #Frames
+        self.adPatWindow.topFrame = tk.Frame(self.adPatWindow, background="#aab9e6")
+        self.adPatWindow.midFrame = tk.Frame(self.adPatWindow, background="#aab9e6")
+        self.adPatWindow.mid2Frame = tk.Frame(self.adPatWindow, background="#aab9e6")
+        self.adPatWindow.botFrame = tk.Frame(self.adPatWindow, background="#a7a7a7")
+        self.adPatWindow.topFrame.pack(side="top")
+        self.adPatWindow.midFrame.pack(side="top")
+        self.adPatWindow.mid2Frame.pack(side="top")
+        self.adPatWindow.botFrame.pack(side="top")
+        #Content
+        self.adPatWindow.patList = tk.Listbox(self.adPatWindow.topFrame, background="#a7b0c9", width=30)
+        self.adPatWindow.patList.pack(side="left")
+        self.adPatWindow.patList.grid(row=0, column=1, padx=10, pady=5)
+        for i in range(len(patients)):           #List generation
+            self.adPatWindow.patList.insert(i+1, f'{patients[i].get_fullpName()}  |  {patients[i].get_pID()}')
+        self.adPatWindow.showButton = tk.Button(self.adPatWindow.midFrame, text='Show Patient info', command=self.patInfoDisp, background="#a7a7a7")
+        self.adPatWindow.showButton.pack(side="left")
+        self.adPatWindow.editButton = tk.Button(self.adPatWindow.midFrame, text="Edit Patient info", command=self.adminPatEdit, background="#a7a7a7")
+        self.adPatWindow.editButton.pack(side="left")
+        self.adPatWindow.delButton = tk.Button(self.adPatWindow.midFrame, text="Add Patient", command=self.adminPatCreate, background="#a7c194")
+        self.adPatWindow.delButton.pack(side="left")
+        self.adPatWindow.docLabel = tk.Label(self.adPatWindow.mid2Frame, text="Patient\'s Details", font=tkfont.Font(family='Helvetica', size=14, weight="bold"), background="#aab9e6")
+        self.adPatWindow.docLabel.pack(side="top")
+        
 
+    def patInfoDisp(self):
+        print("Wasd")
+    
+    def adminPatEdit(self):
+        print("Wasd")
 
+    def adminPatCreate(self):
+        print("Wasd")
 
 #DOCTOR'S SECTION
 
