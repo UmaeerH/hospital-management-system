@@ -715,7 +715,7 @@ class loginGUI:
         self.docLogWindow.logButton.pack(side="bottom")
 
     def docLogin(self):
-        #try:
+        try:
             enteredID = self.docLogWindow.enterID.get()
             print("Login button was clicked")
             for i in range(len(doctors)):
@@ -725,8 +725,8 @@ class loginGUI:
                     loggedDoc = i
                     self.doctorPage()
                     break
-        #except:
-        #    print("Error logging in")
+        except:
+            print("Error logging in")
 
     def doctorPage(self):
         global loggedDoc
@@ -816,7 +816,6 @@ class loginGUI:
             ownList[docSelectedPat] = docEditingPat
             self.docPatViewWindow.alert.config(text="Added Appointment")
         
-
     def illnessChange(self):
         input = self.docPatViewWindow.entry.get()
         global docEditingPat
@@ -829,8 +828,82 @@ class loginGUI:
             ownList[docSelectedPat] = docEditingPat
             self.docPatViewWindow.alert.config(text="Illness successfully changed")
 
+#PATIENT SECTION
+            
     def patPage(self):
-        print("WIP PATIENT")
+        #window properties
+        self.patLogWindow = tk.Toplevel()
+        self.patLogWindow.title("Patient Log-in")
+        self.patLogWindow.geometry("250x250")
+        self.patLogWindow.resizable(0,0)
+        self.patLogWindow.configure(bg="#E6E6FA")
+        #frames
+        self.patLogWindow.topPatLogFrame = tk.Frame(self.patLogWindow)
+        self.patLogWindow.midPatLogFrame = tk.Frame(self.patLogWindow)
+        self.patLogWindow.botPatLogFrame = tk.Frame(self.patLogWindow)
+        self.patLogWindow.topPatLogFrame.pack(side="top")
+        self.patLogWindow.midPatLogFrame.pack(side="top")
+        self.patLogWindow.botPatLogFrame.pack(side="top")
+        #Input
+        self.patLogWindow.idLabel = tk.Label(self.patLogWindow.topPatLogFrame, text="Enter your ID: ", bg="#E6E6FA")
+        self.patLogWindow.idLabel.pack(side="left")
+        self.patLogWindow.enterID = tk.Entry(self.patLogWindow.midPatLogFrame, width=14, bg="#CBC3E3")
+        self.patLogWindow.enterID.pack(side="left")
+        self.patLogWindow.logButton = tk.Button(self.patLogWindow.botPatLogFrame, text="Log-in", bg="#CBC3E3", command=self.patLogin)
+        self.patLogWindow.logButton.pack(side="bottom")
+
+    def patLogin(self):
+        try:
+            enteredID = self.patLogWindow.enterID.get()
+            print("Login button was clicked")
+            for i in range(len(patients)):
+                if enteredID.lower() == patients[i].get_pID():
+                    print("Login verified")
+                    global loggedPatient
+                    loggedPatient = i
+                    self.patientHome()
+                    break
+        except:
+            print("Error logging in")
+
+    def patientHome(self):
+        global loggedPatient
+        loggedinPat = patients[loggedPatient]
+        self.patHomeWindow = tk.Toplevel()
+        self.patHomeWindow.title(loggedinPat.get_fullpName())
+        self.patHomeWindow.geometry("350x250")
+        self.patHomeWindow.resizable(0,0)
+        self.patHomeWindow.configure(bg="#E6E6FA")
+        #Frames
+        self.patHomeWindow.nameFrame = tk.Frame(self.patHomeWindow, background="#e6e6fa")
+        self.patHomeWindow.docFrame = tk.Frame(self.patHomeWindow, background="#e6e6fa")
+        self.patHomeWindow.illnessFrame = tk.Frame(self.patHomeWindow, background="#e6e6fa")
+        self.patHomeWindow.detailsFrame = tk.Frame(self.patHomeWindow, background="#e6e6fa")
+        self.patHomeWindow.details2Frame = tk.Frame(self.patHomeWindow, background="#e5e5e5")
+        self.patHomeWindow.nameFrame.pack(side="top")
+        self.patHomeWindow.docFrame.pack(side="top")
+        self.patHomeWindow.illnessFrame.pack(side="top")
+        self.patHomeWindow.detailsFrame.pack(side="top")
+        self.patHomeWindow.details2Frame.pack(side="top")
+        #Content
+        self.patHomeWindow.name = tk.Label(self.patHomeWindow.nameFrame, background="#e6e6fa", text=f'Welcome {loggedinPat.get_fullpName()}', font=tkfont.Font(family='Helvetica', size=12, weight="bold"))
+        self.patHomeWindow.name.pack(side="top")
+        self.patHomeWindow.doc = tk.Label(self.patHomeWindow.docFrame, background="#e6e6fa", text=f'Your doctor is: {loggedinPat.get_doc()}')
+        self.patHomeWindow.doc.pack(side="top")
+        self.patHomeWindow.illness = tk.Label(self.patHomeWindow.illnessFrame, background="#e6e6fa", text=f"You were last diagnosed with: {loggedinPat.get_illess()}")
+        self.patHomeWindow.illness.pack(side="top")
+        self.patHomeWindow.detailsHead = tk.Label(self.patHomeWindow.detailsFrame, background="#e6e6fa", font=tkfont.Font(family='Helvetica', size=10, weight="bold"), text="Your details:")
+        self.patHomeWindow.detailsHead.pack(side="top")
+        self.patHomeWindow.detailsName = tk.Label(self.patHomeWindow.details2Frame, background="#e5e5e5", width=25, text=f'Name: {loggedinPat.get_fullpName()}')
+        self.patHomeWindow.detailsName.pack(side="top")
+        self.patHomeWindow.detailsAge = tk.Label(self.patHomeWindow.details2Frame, background="#e5e5e5", width=25, text=f'Age: {loggedinPat.get_age()}')
+        self.patHomeWindow.detailsAge.pack(side="top")
+        self.patHomeWindow.detailsAdd = tk.Label(self.patHomeWindow.details2Frame, background="#e5e5e5", width=25, text=f'Address: {loggedinPat.get_address()}')
+        self.patHomeWindow.detailsAdd.pack(side="top")
+        self.patHomeWindow.detailsNumb = tk.Label(self.patHomeWindow.details2Frame, background="#e5e5e5", width=25, text=f'Number: {loggedinPat.get_numb()}')
+        self.patHomeWindow.detailsNumb.pack(side="top")
+
+        
 
 def readPatients():
     with open("patients.csv", "r") as csvFile:
