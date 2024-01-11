@@ -427,10 +427,12 @@ class loginGUI:
         #Frames
         self.adPatWindow.topFrame = tk.Frame(self.adPatWindow, background="#aab9e6")
         self.adPatWindow.midFrame = tk.Frame(self.adPatWindow, background="#aab9e6")
+        self.adPatWindow.mid1Frame = tk.Frame(self.adPatWindow, background="#aab9e6")
         self.adPatWindow.mid2Frame = tk.Frame(self.adPatWindow, background="#aab9e6")
         self.adPatWindow.botFrame = tk.Frame(self.adPatWindow, background="#a7a7a7")
         self.adPatWindow.topFrame.pack(side="top")
         self.adPatWindow.midFrame.pack(side="top")
+        self.adPatWindow.mid1Frame.pack(side="top")
         self.adPatWindow.mid2Frame.pack(side="top")
         self.adPatWindow.botFrame.pack(side="top")
         #Content
@@ -443,17 +445,21 @@ class loginGUI:
         self.adPatWindow.showButton.pack(side="left")
         self.adPatWindow.editButton = tk.Button(self.adPatWindow.midFrame, text="Edit Patient info", command=self.adminPatEdit, background="#a7a7a7")
         self.adPatWindow.editButton.pack(side="left")
-        self.adPatWindow.delButton = tk.Button(self.adPatWindow.midFrame, text="Add Patient", command=self.adminPatCreate, background="#a7c194")
-        self.adPatWindow.delButton.pack(side="left")
+        self.adPatWindow.createButton = tk.Button(self.adPatWindow.midFrame, text="Add Patient", command=self.adminPatCreate, background="#a7c194")
+        self.adPatWindow.createButton.pack(side="left")
+        self.adPatWindow.dischargeButton = tk.Button(self.adPatWindow.mid1Frame, background="#ed7990", text="Discharge Patient", command=self.patDischarge)
+        self.adPatWindow.dischargeButton.pack(side="top")
+        self.adPatWindow.dischargeAlert = tk.Label(self.adPatWindow.mid1Frame, background="#aab9e6", text=" ")
+        self.adPatWindow.dischargeAlert.pack(side="top")
         self.adPatWindow.docLabel = tk.Label(self.adPatWindow.mid2Frame, text="Patient\'s Details", font=tkfont.Font(family='Helvetica', size=14, weight="bold"), background="#aab9e6")
         self.adPatWindow.docLabel.pack(side="top")
         #PATIENT DETAILS
         self.adPatWindow.patName = tk.Label(self.adPatWindow.botFrame, text="Select a patient", width=25, background="#a7a7a7")
         self.adPatWindow.patName.pack(side="top", expand="False")
         self.adPatWindow.patID = tk.Label(self.adPatWindow.botFrame, text=" ", width=25, background="#a7a7a7")
-        self.adPatWindow.patID.pack(side="top", expand="False")        
+        self.adPatWindow.patID.pack(side="top", expand="False")
         self.adPatWindow.patAge = tk.Label(self.adPatWindow.botFrame, text=" ", width=25, background="#a7a7a7")
-        self.adPatWindow.patAge.pack(side="top", expand="False")      
+        self.adPatWindow.patAge.pack(side="top", expand="False")
         self.adPatWindow.patDoc = tk.Label(self.adPatWindow.botFrame, text=" ", width=25, background="#a7a7a7")
         self.adPatWindow.patDoc.pack(side="top", expand="False")
         self.adPatWindow.patNumb = tk.Label(self.adPatWindow.botFrame, text=" ", width=25, background="#a7a7a7")
@@ -606,15 +612,37 @@ class loginGUI:
                 break
         if patDupeCheck == False:
             try:
-                newPat = Patient(enteredName, enteredSname, enteredAge)
+                ageInt = int(enteredAge)
+                newPat = Patient(enteredName, enteredSname, ageInt)
                 patients.append(newPat)
-            except:
+            except ValueError:
                 self.adPatCreateWindow.warningText.config(text="Invalid Age")
+            except:
+                print("Error creating doc")
             else:           #List update
                 self.adPatWindow.patList.delete(0, len(patients))
                 self.adPatCreateWindow.warningText.config(text="Patient Created")
                 for i in range(len(patients)):
                     self.adPatWindow.patList.insert(i+1, f'{patients[i].get_fullpName()}  |  {patients[i].get_pID()}')
+
+    def patDischarge(self):
+        #Get patient
+        for i in self.adPatWindow.patList.curselection():
+            global selectedPat
+            selectedPat = i
+        global editingPat
+        editingPat = copy.deepcopy(patients[selectedPat])
+        if editingPat.get_doc() == "Unassigned":
+            patients.pop(selectedPat)
+            discharged_patients.append(editingPat)
+            #List update
+            self.adPatWindow.patList.delete(0, len(patients))
+            self.adPatWindow.dischargeAlert.config(text="Patient removed")
+            for i in range(len(patients)):
+                self.adPatWindow.patList.insert(i+1, f'{patients[i].get_fullpName()}  |  {patients[i].get_pID()}')
+        else:
+            self.adPatWindow.dischargeAlert.config(text="Unassign patient from doctor to discharge")
+            
 
 #DOCTOR'S SECTION
 
