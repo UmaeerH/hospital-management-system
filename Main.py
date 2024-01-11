@@ -100,12 +100,13 @@ class loginGUI:
         self.adWindow.docButton.pack(side="left")
         self.adWindow.docButton.grid(row=1, column=1, padx=10, pady=2)
         self.adWindow.patButton = tk.Button(self.adWindow.botAdminFrame, text="View Patients", bg="#d4d4d4", command=self.adminPatPage)
-        self.adWindow.patButton.pack(side="left")
-        self.adWindow.patButton.grid(row=2, column=1, padx=10, pady=10)
+        self.adWindow.patButton.grid(row=0, column=0, padx=6, pady=10)
+        self.adWindow.dpatButton = tk.Button(self.adWindow.botAdminFrame, text="View Discharged", bg="#d4d4d4", command=self.adminDpatPage)
+        self.adWindow.dpatButton.grid(row=0, column=1, padx=6, pady=10)
         self.adWindow.reportButton = tk.Button(self.adWindow.bot2AdminFrame, text="Management Report", bg="#d4d4d4", command=self.attempted)        #Placeholder commands
-        self.adWindow.reportButton.pack(side="left")
+        self.adWindow.reportButton.grid(row=0, column=0, padx=6, pady=10)
         self.adWindow.editButton = tk.Button(self.adWindow.bot2AdminFrame, text="Account Details", bg="#d4d4d4", command=self.adminOwnPage)
-        self.adWindow.editButton.pack(side="right")
+        self.adWindow.editButton.grid(row=0, column=1, padx=6, pady=10)
 
 
     def attempted(self):
@@ -643,6 +644,52 @@ class loginGUI:
         else:
             self.adPatWindow.dischargeAlert.config(text="Unassign patient from doctor to discharge")
             
+    def adminDpatPage(self):
+        #Window
+        self.adDPatWindow = tk.Toplevel()
+        self.adDPatWindow.title("Discharged Patients")
+        self.adDPatWindow.geometry("400x350")
+        self.adDPatWindow.resizable(0,0)
+        self.adDPatWindow.configure(bg="#a2a2a2")
+        #Frames
+        self.adDPatWindow.topFrame = tk.Frame(self.adDPatWindow, background="#a2a2a2")
+        self.adDPatWindow.topFrame.pack(side="top")
+        self.adDPatWindow.midFrame = tk.Frame(self.adDPatWindow, background="#a2a2a2")
+        self.adDPatWindow.midFrame.pack(side="top")
+        self.adDPatWindow.botFrame = tk.Frame(self.adDPatWindow, background="#a2a2a2")
+        self.adDPatWindow.botFrame.pack(side="top")
+        #Content
+        self.adDPatWindow.dpatList = tk.Listbox(self.adDPatWindow.topFrame, background="#828282", width=30)
+        self.adDPatWindow.dpatList.pack(side="left")
+        self.adDPatWindow.dpatList.grid(row=0, column=1, padx=5, pady=5)
+        for i in range(len(discharged_patients)):           #List generation
+            self.adDPatWindow.dpatList.insert(i+1, f'{discharged_patients[i].get_fullpName()}  |  {discharged_patients[i].get_pID()}')
+        self.adDPatWindow.button = tk.Button(self.adDPatWindow.midFrame, text='Show info', command=self.dpatInfoDisp, background="#a2a2a2")
+        self.adDPatWindow.button.pack(side="top")
+        #Details
+        self.adDPatWindow.patName = tk.Label(self.adDPatWindow.botFrame, text="Select a patient", width=25, background="#b1b1b1")
+        self.adDPatWindow.patName.pack(side="top", expand="False")
+        self.adDPatWindow.patID = tk.Label(self.adDPatWindow.botFrame, text=" ", width=25, background="#b1b1b1")
+        self.adDPatWindow.patID.pack(side="top", expand="False")
+        self.adDPatWindow.patAge = tk.Label(self.adDPatWindow.botFrame, text=" ", width=25, background="#b1b1b1")
+        self.adDPatWindow.patAge.pack(side="top", expand="False")
+        self.adDPatWindow.patNumb = tk.Label(self.adDPatWindow.botFrame, text=" ", width=25, background="#b1b1b1")
+        self.adDPatWindow.patNumb.pack(side="top", expand="False")
+        self.adDPatWindow.patAddress = tk.Label(self.adDPatWindow.botFrame, text=" ", width=25, background="#b1b1b1")
+        self.adDPatWindow.patAddress.pack(side="top", expand="False")
+
+    def dpatInfoDisp(self):
+        for i in self.adDPatWindow.dpatList.curselection():
+            varA = f'{"Name:":>10} {discharged_patients[i].get_fullpName():>15}'
+            varB = f'{"ID:":>10} {discharged_patients[i].get_pID():>15}'
+            varC = f'{"Number:":>10} {discharged_patients[i].get_numb():>15}'
+            varD = f'{"Address:":>10} {discharged_patients[i].get_address():>25}'
+            varE = f'{"Age:":>10} {str(discharged_patients[i].get_age()):>15}'
+            self.adDPatWindow.patName.config(text=varA)
+            self.adDPatWindow.patID.config(text=varB)
+            self.adDPatWindow.patNumb.config(text=varC)
+            self.adDPatWindow.patAddress.config(text=varD)
+            self.adDPatWindow.patAge.config(text=varE)
 
 #DOCTOR'S SECTION
 
