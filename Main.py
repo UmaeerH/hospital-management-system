@@ -103,7 +103,7 @@ class loginGUI:
         self.adWindow.patButton.grid(row=0, column=0, padx=6, pady=10)
         self.adWindow.dpatButton = tk.Button(self.adWindow.botAdminFrame, text="View Discharged", bg="#d4d4d4", command=self.adminDpatPage)
         self.adWindow.dpatButton.grid(row=0, column=1, padx=6, pady=10)
-        self.adWindow.reportButton = tk.Button(self.adWindow.bot2AdminFrame, text="Management Report", bg="#d4d4d4", command=self.attempted)        #Placeholder commands
+        self.adWindow.reportButton = tk.Button(self.adWindow.bot2AdminFrame, text="Management Report", bg="#d4d4d4", command=self.managementReport)        #Placeholder commands
         self.adWindow.reportButton.grid(row=0, column=0, padx=6, pady=10)
         self.adWindow.editButton = tk.Button(self.adWindow.bot2AdminFrame, text="Account Details", bg="#d4d4d4", command=self.adminOwnPage)
         self.adWindow.editButton.grid(row=0, column=1, padx=6, pady=10)
@@ -185,6 +185,39 @@ class loginGUI:
         loggedAdmin = editingAdmin    
         self.adminWindow.addressL.config(text=f"Address: {loggedAdmin.get_address():>10}")
 
+    def managementReport(self):
+        self.manWindow = tk.Toplevel()
+        self.manWindow.title("Management Report")
+        self.manWindow.geometry("500x350")
+        self.manWindow.resizable(0,0)
+        self.manWindow.configure(bg="#d6d4ff")
+        #FRAMES
+        self.manWindow.topFrame = tk.Frame(self.manWindow, background="#d6d4ff")
+        self.manWindow.topFrame.pack(side="top")
+        self.manWindow.midFrame = tk.Frame(self.manWindow, background="#d6d4ff")
+        self.manWindow.midFrame.pack(side="top")
+        self.manWindow.botFrame = tk.Frame(self.manWindow, background="#d6d4ff")
+        self.manWindow.botFrame.pack(side="top")
+        #Content
+        self.manWindow.totalNumb = tk.Label(self.manWindow.topFrame, text="Total Numbers:", background="#d6d4ff", font=tkfont.Font(size=12, weight="bold"))
+        self.manWindow.totalNumb.pack(side="top")
+        self.manWindow.totalNumbD = tk.Label(self.manWindow.topFrame, text=f'{len(doctors)} doctors', background="#d6d4ff")
+        self.manWindow.totalNumbD.pack(side="top")
+        self.manWindow.totalNumbP = tk.Label(self.manWindow.topFrame, text=f'{len(patients)} patients', background="#d6d4ff")
+        self.manWindow.totalNumbP.pack(side="top")
+        self.manWindow.totalNumbA = tk.Label(self.manWindow.topFrame, text=f'{len(admins)} admins', background="#d6d4ff")
+        self.manWindow.totalNumbA.pack(side="top")
+        #Number of pats per doctors:
+        theString = " "
+        self.manWindow.numbHeader = tk.Label(self.manWindow.midFrame, text="Number of patients per doctor:", background="#d6d4ff", font=tkfont.Font(size=12, weight="bold"))
+        self.manWindow.numbHeader.pack(side="top")
+        for i in range(len(doctors)):
+            dr = doctors[i].get_fullName()
+            patN = len(doctors[i].get_patient())
+            drLine = f'Dr. {dr}:  {patN}\n'
+            theString += drLine 
+        self.manWindow.perDoc = tk.Label(self.manWindow.midFrame, text=theString, background="#b8b8b8", width="35")
+        self.manWindow.perDoc.pack(side="top")
 
     def adminDocPage(self):
         self.adDocWindow = tk.Toplevel()
@@ -914,7 +947,7 @@ def readPatients():
         csvFile.close()
 
 def writePatients():
-    with open("patients2.csv", "w", newline='') as csvFile:
+    with open("patients.csv", "w", newline='') as csvFile:
         writer = csv.writer(csvFile)
         writer.writerows(patients)
 
