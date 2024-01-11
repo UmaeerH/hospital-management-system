@@ -10,7 +10,7 @@ from Patient import Patient
 #ACTORS
 admins = [Admin('admin','123','B1 1AB'), Admin('admin2','242','B2 1AB')] # username is 'admin', password is '123'
 doctors = [Doctor('John','Smith','Internal Med.'), Doctor('Will','Robinson','Pediatrics'), Doctor('Jone','Carlos','Cardiology'), Doctor("Irie", "Ford", "Pediatrics", "B1 1AB", "+4472794272")]
-patients = [Patient('Sara','Smith', 20, '07012345678','B1 234'), Patient('Mike','Jones', 37,'07555551234','L2 2AB'), Patient('Daivd','Smith', 15, '07123456789','C1 ABC')]
+patients = [Patient('Sara','Smith', 20, '07012345678','B1 234'), Patient('Mike','Jones', 37,'07555551234','L2 2AB'), Patient('David','Smith', 15, '07123456789','C1 ABC')]
 discharged_patients = []
 
 #TODO   "text files to store the patient’s related information" -- no worries about saving to these files, or doctor/admin files
@@ -453,6 +453,8 @@ class loginGUI:
         self.adPatWindow.patName.pack(side="top", expand="False")
         self.adPatWindow.patID = tk.Label(self.adPatWindow.botFrame, text=" ", width=25, background="#a7a7a7")
         self.adPatWindow.patID.pack(side="top", expand="False")        
+        self.adPatWindow.patAge = tk.Label(self.adPatWindow.botFrame, text=" ", width=25, background="#a7a7a7")
+        self.adPatWindow.patAge.pack(side="top", expand="False")      
         self.adPatWindow.patDoc = tk.Label(self.adPatWindow.botFrame, text=" ", width=25, background="#a7a7a7")
         self.adPatWindow.patDoc.pack(side="top", expand="False")
         self.adPatWindow.patNumb = tk.Label(self.adPatWindow.botFrame, text=" ", width=25, background="#a7a7a7")
@@ -462,7 +464,6 @@ class loginGUI:
         self.adPatWindow.patSickness = tk.Label(self.adPatWindow.botFrame, text=" ", width=35, background="#a7a7a7")
         self.adPatWindow.patSickness.pack(side="top", expand="True")
 
-
     def patInfoDisp(self):
         for i in self.adPatWindow.patList.curselection():
             varA = f'{"Name:":>10} {patients[i].get_fullpName():>15}'
@@ -470,16 +471,50 @@ class loginGUI:
             varC = f'{"Doctor:":>10} {patients[i].get_doc():>15}'
             varD = f'{"Number:":>10} {patients[i].get_numb():>15}'
             varE = f'{"Address:":>10} {patients[i].get_address():>25}'
-            varF = f'{"Diagnosis:":>10} \n{str(patients[i].get_illess()):>25}'
+            varF = f'{"Diagnosis:":>10} {str(patients[i].get_illess()):>15}'
+            varG = f'{"Age:":>10} {str(patients[i].get_age()):>15}'
             self.adPatWindow.patName.config(text=varA)
             self.adPatWindow.patID.config(text=varB)
             self.adPatWindow.patDoc.config(text=varC)
             self.adPatWindow.patNumb.config(text=varD)
             self.adPatWindow.patAddress.config(text=varE)
             self.adPatWindow.patSickness.config(text=varF)
+            self.adPatWindow.patAge.config(text=varG)
     
     def adminPatEdit(self):
-        print("Wasd")
+        #Get patient
+        for i in self.adPatWindow.patList.curselection():
+            global selectedPat
+            selectedPat = i
+        global editingPat
+        editingPat = copy.deepcopy(patients[selectedPat])
+        #Window settings
+        self.adPatEditWindow = tk.Toplevel()
+        self.adPatEditWindow.title(editingPat.get_fullpName())
+        self.adPatEditWindow.geometry("300x250")
+        self.adPatEditWindow.resizable(0,0)
+        self.adPatEditWindow.configure(bg="#aab9e6")
+        #Frames
+        self.adPatEditWindow.nameIDFrame = tk.Frame(self.adPatEditWindow, background="#aab9e6")
+        self.adPatEditWindow.doctorFrame = tk.Frame(self.adPatEditWindow, background="#aab9e6")
+        self.adPatEditWindow.IllnessFrame = tk.Frame(self.adPatEditWindow, background="#aab9e6")
+        self.adPatEditWindow.EntryFrame = tk.Frame(self.adPatEditWindow, background="#aab9e6")
+        self.adPatEditWindow.alertFrame = tk.Frame(self.adPatEditWindow, background="#aab9e6")
+        self.adPatEditWindow.buttonFrame = tk.Frame(self.adPatEditWindow, background="#aab9e6")
+        self.adPatEditWindow.nameIDFrame.pack(side="top")
+        self.adPatEditWindow.doctorFrame.pack(side="top")
+        self.adPatEditWindow.IllnessFrame.pack(side="top")
+        self.adPatEditWindow.EntryFrame.pack(side="top")
+        self.adPatEditWindow.alertFrame.pack(side="top")
+        self.adPatEditWindow.buttonFrame.pack(side="top")
+        #Content
+        pnameID = f'{editingPat.get_fullpName():<15}|{editingPat.get_pID():^5}'
+        self.adPatEditWindow.nameLab = tk.Label(self.adPatEditWindow.nameIDFrame, background="#aab9e6", text=pnameID, font=tkfont.Font(family='Helvetica', size=12, weight="bold"))
+        self.adPatEditWindow.nameLab.pack(side="top")
+        self.adPatEditWindow.doctorLab = tk.Label(self.adPatEditWindow.doctorFrame, background="#aab9e6", text=f'Doctor:  {editingPat.get_doc()}')
+        self.adPatEditWindow.doctorLab.pack(side="top")
+        self.adPatEditWindow.illnessLab = tk.Label(self.adPatEditWindow.IllnessFrame, background="#aab9e6", text=f'Diagnosis:  {editingPat.get_illess()}')
+        self.adPatEditWindow.illnessLab.pack(side="top")
 
     def adminPatCreate(self):
         print("Wasd")
