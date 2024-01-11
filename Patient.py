@@ -52,6 +52,11 @@ class Patient:
         self.__appointments.append(date)
     def rem_appointment(self, date):
         self.__appointments.remove(date)
+
+    def get_address(self):
+        return self.__address
+    def set_address(self, nAdd):
+        self.__address = nAdd
     
     def display(self) :
         return f'{self.__firstName:<10}{self.__secondName:<10}|{self.__doc:^15}|{self.__patientID:^5}'

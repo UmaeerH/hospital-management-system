@@ -448,10 +448,35 @@ class loginGUI:
         self.adPatWindow.delButton.pack(side="left")
         self.adPatWindow.docLabel = tk.Label(self.adPatWindow.mid2Frame, text="Patient\'s Details", font=tkfont.Font(family='Helvetica', size=14, weight="bold"), background="#aab9e6")
         self.adPatWindow.docLabel.pack(side="top")
-        
+        #PATIENT DETAILS
+        self.adPatWindow.patName = tk.Label(self.adPatWindow.botFrame, text="Select a patient", width=25, background="#a7a7a7")
+        self.adPatWindow.patName.pack(side="top", expand="False")
+        self.adPatWindow.patID = tk.Label(self.adPatWindow.botFrame, text=" ", width=25, background="#a7a7a7")
+        self.adPatWindow.patID.pack(side="top", expand="False")        
+        self.adPatWindow.patDoc = tk.Label(self.adPatWindow.botFrame, text=" ", width=25, background="#a7a7a7")
+        self.adPatWindow.patDoc.pack(side="top", expand="False")
+        self.adPatWindow.patNumb = tk.Label(self.adPatWindow.botFrame, text=" ", width=25, background="#a7a7a7")
+        self.adPatWindow.patNumb.pack(side="top", expand="False")
+        self.adPatWindow.patAddress = tk.Label(self.adPatWindow.botFrame, text=" ", width=35, background="#a7a7a7")
+        self.adPatWindow.patAddress.pack(side="top", expand="False")
+        self.adPatWindow.patSickness = tk.Label(self.adPatWindow.botFrame, text=" ", width=35, background="#a7a7a7")
+        self.adPatWindow.patSickness.pack(side="top", expand="True")
+
 
     def patInfoDisp(self):
-        print("Wasd")
+        for i in self.adPatWindow.patList.curselection():
+            varA = f'{"Name:":>10} {patients[i].get_fullpName():>15}'
+            varB = f'{"ID:":>10} {patients[i].get_pID():>15}'
+            varC = f'{"Doctor:":>10} {patients[i].get_doc():>15}'
+            varD = f'{"Number:":>10} {patients[i].get_numb():>15}'
+            varE = f'{"Address:":>10} {patients[i].get_address():>25}'
+            varF = f'{"Diagnosis:":>10} \n{str(patients[i].get_illess()):>25}'
+            self.adPatWindow.patName.config(text=varA)
+            self.adPatWindow.patID.config(text=varB)
+            self.adPatWindow.patDoc.config(text=varC)
+            self.adPatWindow.patNumb.config(text=varD)
+            self.adPatWindow.patAddress.config(text=varE)
+            self.adPatWindow.patSickness.config(text=varF)
     
     def adminPatEdit(self):
         print("Wasd")
