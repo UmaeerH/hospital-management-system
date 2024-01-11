@@ -48,6 +48,8 @@ class Patient:
     def set_numb(self, number):
         self.__number = str(number)
     
+    def get_appointment(self):
+        return self.__appointments
     def add_appointment(self, date):
         self.__appointments.append(date)
     def rem_appointment(self, date):

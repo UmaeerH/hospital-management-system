@@ -715,7 +715,7 @@ class loginGUI:
         self.docLogWindow.logButton.pack(side="bottom")
 
     def docLogin(self):
-        try:
+        #try:
             enteredID = self.docLogWindow.enterID.get()
             print("Login button was clicked")
             for i in range(len(doctors)):
@@ -725,16 +725,71 @@ class loginGUI:
                     loggedDoc = i
                     self.doctorPage()
                     break
-        except:
-            print("Error logging in")
+        #except:
+        #    print("Error logging in")
 
     def doctorPage(self):
         global loggedDoc
         self.docHomeWindow = tk.Toplevel()
         self.docHomeWindow.title("Doctor " + doctors[loggedDoc].get_fullName())
-        self.docHomeWindow.geometry("350x250")
+        self.docHomeWindow.geometry("350x300")
         self.docHomeWindow.resizable(0,0)
         self.docHomeWindow.configure(bg="#58f9bb")
+        #Frames
+        self.docHomeWindow.topFrame = tk.Frame(self.docHomeWindow, background="#58f9bb")
+        self.docHomeWindow.midFrame = tk.Frame(self.docHomeWindow, background="#58f9bb")
+        self.docHomeWindow.botFrame = tk.Frame(self.docHomeWindow, background="#58f9bb")
+        self.docHomeWindow.topFrame.pack(side="top")
+        self.docHomeWindow.midFrame.pack(side="top")
+        self.docHomeWindow.botFrame.pack(side="top")
+        #Content
+        currentDoctor = copy.deepcopy(doctors[loggedDoc])
+        welcome = f'Welcome Dr. {currentDoctor.get_firstName()}'
+        self.docHomeWindow.header = tk.Label(self.docHomeWindow.topFrame, text=welcome, font=tkfont.Font(family='Helvetica', size=14, weight="bold"), background="#58f9bb")
+        self.docHomeWindow.header2 = tk.Label(self.docHomeWindow.topFrame, text="Your patients:", background="#58f9bb")
+        self.docHomeWindow.header.pack(side="top")
+        self.docHomeWindow.header2.pack(side="top")
+        self.docHomeWindow.list = tk.Listbox(self.docHomeWindow.midFrame, width=30)
+        self.docHomeWindow.list.grid(row=0, column=1, padx=10, pady=3)
+        #List generation
+        global ownList
+        ownList = currentDoctor.get_patient()
+        for i in range(len(ownList)):
+            self.docHomeWindow.list.insert(i+1, f'{ownList[i].get_fullpName():<15}  |  {ownList[i].get_pID():>5}')
+        self.docHomeWindow.button = tk.Button(self.docHomeWindow.botFrame, text="View Patient", command=self.docPatPage)
+        self.docHomeWindow.button.pack(side="top")
+
+    def docPatPage(self):
+        #Get patient
+        for i in self.docHomeWindow.list.curselection():
+            global docSelectedPat
+            docSelectedPat = i
+        global docEditingPat
+        docEditingPat = copy.deepcopy(ownList[docSelectedPat])
+        #Window
+        self.docPatViewWindow = tk.Toplevel()
+        self.docPatViewWindow.title(f'{docEditingPat.get_fullpName()}\'s Details')
+        self.docPatViewWindow.geometry("350x250")
+        self.docPatViewWindow.resizable(0,0)
+        self.docPatViewWindow.configure(bg="#58f9bb")
+        #Frames
+        self.docPatViewWindow.nameFrame = tk.Frame(self.docPatViewWindow, background="#58f9bb")
+        self.docPatViewWindow.ageFrame = tk.Frame(self.docPatViewWindow, background="#58f9bb")
+        self.docPatViewWindow.sympFrame = tk.Frame(self.docPatViewWindow, background="#58f9bb")
+        self.docPatViewWindow.apptsFrame = tk.Frame(self.docPatViewWindow, background="#58f9bb")
+        self.docPatViewWindow.nameFrame.pack(side="top")
+        self.docPatViewWindow.ageFrame.pack(side="top")
+        self.docPatViewWindow.sympFrame.pack(side="top")
+        self.docPatViewWindow.apptsFrame.pack(side="top")
+        #Content
+        self.docPatViewWindow.header = tk.Label(self.docPatViewWindow.nameFrame, background="#58f9bb", text=f'{docEditingPat.get_fullpName():<15}|{docEditingPat.get_pID():>5}', font=tkfont.Font(family='Helvetica', size=14, weight="bold"))
+        self.docPatViewWindow.header.pack(side="top")
+        self.docPatViewWindow.age = tk.Label(self.docPatViewWindow.ageFrame, text=f'Age:  {docEditingPat.get_age()}')
+        self.docPatViewWindow.age.pack(side="top")
+        self.docPatViewWindow.illness = tk.Label(self.docPatViewWindow.sympFrame, text=f'Illness:  {docEditingPat.get_illess()}')
+        self.docPatViewWindow.illness.pack(side="top")
+        self.docPatViewWindow.apts = tk.Label(self.docPatViewWindow.apptsFrame, text=f'Appointments:  {docEditingPat.get_appointment()}')
+        self.docPatViewWindow.apts.pack(side="top")
 
 
     def patPage(self):
@@ -755,6 +810,12 @@ def writePatients():
 
 def main():
     readPatients()
+    test = copy.deepcopy(doctors[2])
+    test.add_patient(patients[3])
+    tempPat = copy.deepcopy(patients[3])
+    tempPat.set_doc(test.get_docID())
+    patients[3] = tempPat
+    doctors[2] = test
     loginGUI()
     writePatients()
 
