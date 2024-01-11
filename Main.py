@@ -12,11 +12,8 @@ from Patient import Patient
 #ACTORS
 admins = [Admin('admin','123','B1 1AB'), Admin('admin2','242','B2 1AB')] # username is 'admin', password is '123'
 doctors = [Doctor('John','Smith','Internal Med.'), Doctor('Will','Robinson','Pediatrics'), Doctor('Jone','Carlos','Cardiology'), Doctor("Irie", "Ford", "Pediatrics", "B1 1AB", "+4472794272")]
-#patients = [Patient('Sara','Smith', 20, '07012345678','B1 234'), Patient('Mike','Jones', 37,'07555551234','L2 2AB'), Patient('David','Smith', 15, '07123456789','C1 ABC')]
 patients = []
 discharged_patients = []
-
-#TODO   "text files to store the patient’s related information" -- no worries about saving to these files, or doctor/admin files
 loggedDoc = 0
 
 class loginGUI:
@@ -79,7 +76,7 @@ class loginGUI:
         self.window.textLabel = tk.Label(self.window.botAdminLogFrame, text="Case sensitive", bg="#d6d4ff", font=tkfont.Font(family='Helvetica', size=8))
         self.window.textLabel.pack(side="top")
 
-    #WINDOW FOR ADMIN       #TODO Admin can edit own stuff
+    #WINDOW FOR ADMIN
     def adminPage(self):
         self.adWindow = tk.Toplevel()
         self.adWindow.title("Admin Home")
@@ -110,7 +107,6 @@ class loginGUI:
         self.adWindow.reportButton.grid(row=0, column=0, padx=6, pady=10)
         self.adWindow.editButton = tk.Button(self.adWindow.bot2AdminFrame, text="Account Details", bg="#d4d4d4", command=self.adminOwnPage)
         self.adWindow.editButton.grid(row=0, column=1, padx=6, pady=10)
-
 
     def attempted(self):
         try:
@@ -750,10 +746,17 @@ def readPatients():
         for row in reader:
             scannedPat = Patient(*row)
             patients.append(scannedPat)
+        csvFile.close()
+
+def writePatients():
+    with open("patients2.csv", "w", newline='') as csvFile:
+        writer = csv.writer(csvFile)
+        writer.writerows(patients)
 
 def main():
     readPatients()
     loginGUI()
+    writePatients()
 
 if __name__ == "__main__":
     main()

@@ -64,6 +64,8 @@ class Patient:
     def __str__(self):
         return f'{self.__firstName} {self.__secondName}, {self.__age} | Treated by {self.__doc} for {self.__illness} | ID: {self.__patientID}\nAddress: {self.__address} | numb: {self.__number}'
 
+    def __iter__(self):
+        return iter([self.__firstName, self.__secondName, self.__age, self.__number, self.__address])
 #testing
 def main():
     pat1 = Patient("Arthur", "Allen", 23, "Kuwait")
