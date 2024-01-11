@@ -364,7 +364,7 @@ class loginGUI:
         #Window
         self.adDocCreateWindow = tk.Toplevel()
         self.adDocCreateWindow.title("Create Doctor")
-        self.adDocCreateWindow.geometry("300x350")
+        self.adDocCreateWindow.geometry("300x150")
         self.adDocCreateWindow.resizable(0,0)
         self.adDocCreateWindow.configure(bg="#a7c194")
         #Frames
@@ -536,12 +536,10 @@ class loginGUI:
         editingPat.set_firstName(self.adPatEditWindow.entry.get())
         patients[selectedPat] = editingPat
         self.adPatEditWindow.alertLabel.config(text="First Name Changed")
-
     def patEditName2(self):
         editingPat.set_secondName(self.adPatEditWindow.entry.get())
         patients[selectedPat] = editingPat
         self.adPatEditWindow.alertLabel.config(text="Second Name Changed")
-
     def patEditAge(self):
         try:
             int(self.adPatEditWindow.entry.get())
@@ -551,19 +549,72 @@ class loginGUI:
             editingPat.set_age(self.adPatEditWindow.entry.get())
             patients[selectedPat] = editingPat
             self.adPatEditWindow.alertLabel.config(text="Age changed")
-
     def patEditNumb(self):
         editingPat.set_numb(self.adPatEditWindow.entry.get())
         patients[selectedPat] = editingPat
         self.adPatEditWindow.alertLabel.config(text="Number Changed")
-
     def patEditAdd(self):
         editingPat.set_address(self.adPatEditWindow.entry.get())
         patients[selectedPat] = editingPat
         self.adPatEditWindow.alertLabel.config(text="Address Changed")
 
     def adminPatCreate(self):
-        print("Wasd")
+        #Window
+        self.adPatCreateWindow = tk.Toplevel()
+        self.adPatCreateWindow.title("Create Patient")
+        self.adPatCreateWindow.geometry("300x150")
+        self.adPatCreateWindow.resizable(0,0)
+        self.adPatCreateWindow.configure(bg="#a7c194")
+        #Frames
+        self.adPatCreateWindow.nameFrame = tk.Frame(self.adPatCreateWindow, background="#a7c194")
+        self.adPatCreateWindow.nameFrame.pack(side="top")
+        self.adPatCreateWindow.surnameFrame = tk.Frame(self.adPatCreateWindow, background="#a7c194")
+        self.adPatCreateWindow.surnameFrame.pack(side="top")
+        self.adPatCreateWindow.ageFrame = tk.Frame(self.adPatCreateWindow, background="#a7c194")
+        self.adPatCreateWindow.ageFrame.pack(side="top")
+        self.adPatCreateWindow.buttonFrame = tk.Frame(self.adPatCreateWindow, background="#a7c194")
+        self.adPatCreateWindow.buttonFrame.pack(side="top")
+        #Inputs
+        self.adPatCreateWindow.nameL = tk.Label(self.adPatCreateWindow.nameFrame, text="First name:")
+        self.adPatCreateWindow.nameL.pack(side="left")
+        self.adPatCreateWindow.nameE = tk.Entry(self.adPatCreateWindow.nameFrame, background="#d4d4d4")
+        self.adPatCreateWindow.nameE.pack(side="left")
+        self.adPatCreateWindow.surnameL = tk.Label(self.adPatCreateWindow.surnameFrame, text="Second name:")
+        self.adPatCreateWindow.surnameL.pack(side="left")
+        self.adPatCreateWindow.surnameE = tk.Entry(self.adPatCreateWindow.surnameFrame, background="#d4d4d4")
+        self.adPatCreateWindow.surnameE.pack(side="left")
+        self.adPatCreateWindow.ageL = tk.Label(self.adPatCreateWindow.ageFrame, text="Age:")
+        self.adPatCreateWindow.ageL.pack(side="left")
+        self.adPatCreateWindow.ageE = tk.Entry(self.adPatCreateWindow.ageFrame, background="#d4d4d4")
+        self.adPatCreateWindow.ageE.pack(side="left")
+        self.adPatCreateWindow.createButton = tk.Button(self.adPatCreateWindow.buttonFrame, text="Create Doctor", command=self.patientCreate, background="#d4d4d4")
+        self.adPatCreateWindow.createButton.pack(side="top")
+        self.adPatCreateWindow.warningText = tk.Label(self.adPatCreateWindow.buttonFrame, text=" ", background="#a7c194", font=tkfont.Font(family='Helvetica', size=14, weight="bold"))
+        self.adPatCreateWindow.warningText.pack(side="top")
+
+    def patientCreate(self):
+        #Get Entered info
+        enteredName = self.adPatCreateWindow.nameE.get().capitalize()
+        enteredSname = self.adPatCreateWindow.surnameE.get().capitalize()
+        enteredAge = self.adPatCreateWindow.ageE.get()
+        patDupeCheck = False
+        for i in range(len(patients)):
+            if enteredName == patients[i].get_firstName() and enteredSname == patients[i].get_secondName():
+                print("Name taken")
+                patDupeCheck = True
+                self.adPatCreateWindow.warningText.config(text="Name already taken")
+                break
+        if patDupeCheck == False:
+            try:
+                newPat = Patient(enteredName, enteredSname, enteredAge)
+                patients.append(newPat)
+            except:
+                self.adPatCreateWindow.warningText.config(text="Invalid Age")
+            else:           #List update
+                self.adPatWindow.patList.delete(0, len(patients))
+                self.adPatCreateWindow.warningText.config(text="Patient Created")
+                for i in range(len(patients)):
+                    self.adPatWindow.patList.insert(i+1, f'{patients[i].get_fullpName()}  |  {patients[i].get_pID()}')
 
 #DOCTOR'S SECTION
 
